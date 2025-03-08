@@ -1,9 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
-import group1Image from "@/assets/groups/group1.png";
 import GroupCard from "@/components/groups/group-card";
 import { Pagination } from "@/components/members/pagination";
 import {
@@ -13,10 +10,11 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { useGetGroupsQuery } from "@/redux/api/baseApi";
 import { FaPlus } from "react-icons/fa";
 import Loading from "@/components/Loading";
 import CreateGroup from "@/components/groups/CreateGroup";
+import { useGetGroupsQuery, useGetMyGroupsQuery } from "@/redux/api/groupApi";
+import { all } from "axios";
 
 interface Group {
   id: string;
@@ -28,61 +26,36 @@ interface Group {
 }
 
 export default function Groups() {
-  const [createGroup, setCreateGroup] = useState(false);
+  const [createGroupModel, setCreateGroupModel] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedFilter, setSelectedFilter] = useState<"all" | "my">("all");
+  
   const itemsPerPage = 6;
 
-  const { data, isLoading } = useGetGroupsQuery();
-  const apiGroups = data?.data || [];
+  const { data: groups, isLoading } = useGetGroupsQuery();
+  const { data: myGroups, isLoading: myGroupsLoading } = useGetMyGroupsQuery();
+const apiGroups = groups?.data;
+const apiMyGroups = myGroups?.data;
+const allGroupsHandler = () => {
+  // setSelectedFilter("all");
+  setCurrentPage(1);
+}
 
-  // Local state to track created groups
-  const [groups, setGroups] = useState<Group[]>(apiGroups);
-  const [createdGroups, setCreatedGroups] = useState();
+const myGroupsHandler = () => {
+  // setSelectedFilter("my");
+  setCurrentPage(1);
+}
 
-  // Update groups when API data changes
-  useEffect(() => {
-    if (apiGroups && JSON.stringify(apiGroups) !== JSON.stringify(groups)) {
-      setGroups(apiGroups);
-    }
-  }, [apiGroups, groups]); // Runs when either apiGroups or groups change
 
-  const myGroups = groups.slice(-3); // Get last 3 groups as my groups
-
-  const displayedGroups = selectedFilter === "all" ? groups : myGroups;
-  // Reset pagination when groups or filter change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedFilter, groups]);
-
-  const totalPages = Math.max(
-    1,
-    Math.ceil(displayedGroups.length / itemsPerPage)
-  );
-  const currentGroups = displayedGroups.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
-
-  // Function to handle newly created groups
-  const handleCreateGroup = (newGroup: Group) => {
-    setGroups((prevGroups) => [...prevGroups, newGroup]);
-    setCreateGroup(false);
-  };
+  // const handlePageChange = (page: number) => {
+  //   if (page >= 1 && page <= totalPages) {
+  //     setCurrentPage(page);
+  //   }
+  // };
 
   if (isLoading) return <Loading />;
 
   return (
     <div className="relative">
-      {createGroup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
-      )}
       <div className="sm:mx-auto py-10 space-y-2 md:space-y-4 sm:w-full md:pl-12 px-4 mb-10 sm:container">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
           Groups
@@ -93,26 +66,25 @@ export default function Groups() {
           {/* Filter Tabs */}
           <div className="flex flex-row items-start gap-2 md:gap-4">
             <div
-              className={`flex items-center text-sm sm:text-base font-bold cursor-pointer ${
-                selectedFilter === "all" ? "text-red" : "text-gray-500"
-              }`}
-              onClick={() => setSelectedFilter("all")}
+              className={`flex items-center text-sm sm:text-base font-bold cursor-pointer 
+           `}
+              onClick={allGroupsHandler}
             >
               All Groups
               <span className="ml-2 text-xs bg-red px-2 text-white rounded py-[2px]">
-                {groups.length}
+                {apiGroups.length}
               </span>
             </div>
 
             <div
-              className={`flex items-center text-sm sm:text-base font-bold cursor-pointer ${
-                selectedFilter === "my" ? "text-red" : "text-gray-500"
-              }`}
-              onClick={() => setSelectedFilter("my")}
+              className={`flex items-center text-sm sm:text-base font-bold cursor-pointer
+           }
+              `}
+              onClick={myGroupsHandler}
             >
               My Groups
               <span className="ml-2 text-xs bg-gray-200 px-2 rounded py-[2px]">
-                {myGroups.length}
+                {myGroups?.data?.length}
               </span>
             </div>
           </div>
@@ -121,23 +93,20 @@ export default function Groups() {
           <div className="flex items-center md:justify-center gap-5">
             {/* Create Group Button */}
             <button
-              onClick={() => setCreateGroup(true)}
+              onClick={() => setCreateGroupModel(true)}
               className="bg-white py-2 px-5 md:text-base text-sm text-black rounded-md flex gap-2 items-center font-medium"
             >
               <FaPlus />
               <span
                 className={`${
-                  createGroup ? "block md:hidden" : "md:block hidden"
+                  createGroupModel ? "block md:hidden" : "md:block hidden"
                 }`}
               >
                 Create Group
               </span>
             </button>
-            {createGroup && (
-              <CreateGroup
-                setCreateGroup={setCreateGroup}
-                onCreate={handleCreateGroup}
-              />
+            {createGroupModel && (
+              <CreateGroup setCreateGroupModel={setCreateGroupModel} />
             )}
 
             <div className="flex items-center gap-5">
@@ -162,18 +131,18 @@ export default function Groups() {
 
         {/* Groups Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {currentGroups.map((group: Group) => (
+          {apiGroups.map((group: Group) => (
             <GroupCard key={group.id} group={group} />
           ))}
         </div>
 
         {/* Pagination */}
-        <Pagination
+        {/* <Pagination
           currentPage={currentPage}
           totalItems={displayedGroups.length}
           itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
-        />
+        /> */}
       </div>
     </div>
   );

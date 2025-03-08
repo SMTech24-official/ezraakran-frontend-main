@@ -10,19 +10,20 @@ import {
   useGetGroupStatusQuery,
   useJoinGroupMutation,
   useSingleGroupQuery,
-} from "@/redux/api/baseApi";
+} from "@/redux/api/groupApi";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { group } from "console";
 import Loading from "../Loading";
 
 const GroupBanner = () => {
-  const { id: groupId } = useParams(); // Get the group ID from the URL
+  const { id: groupId } = useParams(); 
   const { data: singleGroup, isLoading } = useSingleGroupQuery(groupId);
-  const groupName = singleGroup?.data?.name;
+
   const [createPost, setCreatePost] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
   const [joinGroup, { isLoading: joinLoading }] = useJoinGroupMutation(); // Mutation hook to join group
+  
   const user = useSelector(
     (state: { user: { user: { id: string } } }) => state.user.user
   );
@@ -31,7 +32,7 @@ const GroupBanner = () => {
   const { data } = useGetGroupMemberByGroupIdQuery(groupId);
   const member = data?.data?.data.length;
   const groupMember = data?.data?.data || [];
-  // console.log(groupMember)
+
   // console.log(groupMember, "groupMember");
 
   // Filter group members based on userId
@@ -42,6 +43,7 @@ const GroupBanner = () => {
   const isUserGroupMember: GroupMember[] = groupMember?.find(
     (member: GroupMember) => member?.userId === userId
   );
+  const isOwner = singleGroup?.data?.ownerId === userId;
 
   // const { data: groupStatus } = useGetGroupStatusQuery({ groupId });
   // console.log(groupStatus);
@@ -103,6 +105,10 @@ const GroupBanner = () => {
           <h3 className="text-sm opacity-80 md:text-base md:mt-4 font-bold ">
             {member} Members
           </h3>
+
+          {isOwner && <h3 className="text-sm opacity-80 md:text-base md:mt-4 font-bold ">
+            {member} Joining Request
+          </h3>}
           <div className="flex md:flex-row flex-col gap-5 mt-1 md:mt-5">
             {isUserGroupMember ? (
               <Link
@@ -143,7 +149,7 @@ const GroupBanner = () => {
         {/* right */}
         <div className="right w-full md:w-1/2 md:h-full h-[200px] overflow-hidden md:py-5">
           <Image
-            src={group1Image}
+            src={singleGroup?.data?.image || ""}
             alt="group-image"
             height={400}
             width={400}

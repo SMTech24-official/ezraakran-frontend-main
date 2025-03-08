@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useGetGroupsQuery } from "@/redux/api/baseApi";
+import { useGetGroupsQuery } from "@/redux/api/groupApi";
 
 import Loading from "@/components/Loading";
 import Link from "next/link";

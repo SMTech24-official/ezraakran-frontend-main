@@ -6,8 +6,10 @@ import { GrDislike, GrLike } from "react-icons/gr";
 import { LiaComments } from "react-icons/lia";
 import {
   useDeleteGroupPostMutation,
-  useGetPostReactionsQuery,
   useGetPostsByGroupIdQuery,
+} from "@/redux/api/groupApi";
+import {
+  useGetPostReactionsQuery,
   usePostReactionMutation,
 } from "@/redux/api/baseApi";
 import { useParams } from "next/navigation";

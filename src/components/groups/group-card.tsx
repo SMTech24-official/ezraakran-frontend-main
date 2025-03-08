@@ -8,7 +8,7 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import {
   useJoinGroupMutation,
   useLeaveGroupMutation,
-} from "@/redux/api/baseApi";
+} from "@/redux/api/groupApi";
 import { toast } from "sonner";
 
 interface Group {
@@ -25,9 +25,9 @@ interface GroupCardProps {
 }
 
 export default function GroupCard({ group }: GroupCardProps) {
+  console.log(group, "group");
   const [joinGroup] = useJoinGroupMutation();
   const [leaveGroup] = useLeaveGroupMutation();
-  // State for popup visibility
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   // Function to toggle popup visibility
@@ -98,64 +98,63 @@ export default function GroupCard({ group }: GroupCardProps) {
           </button>
         </div>
       )}
-
-      <div className="space-y-6">
-        <div className="space-y-4 h-[150px] flex flex-col gap-1">
-          <span
-            className={`px-3 py-2  text-xs rounded-full font-bold w-fit ${
-              group?.type === "Community Group"
-                ? "bg-green text-black"
-                : "bg-pink text-black"
-            }`}
-          >
-            {group?.type || "Community Group"}
-          </span>
-
-          <div className="space-y-2">
-            <Link
-              href="/groups/1"
-              className="text-xl md:text-3xl font-bold capitalize tracking-tight
-              "
+      <Link href={`/groups/${group?.id}`}>
+        <div className="space-y-6">
+          <div className="space-y-4 h-[150px] flex flex-col gap-1">
+            <span
+              className={`px-3 py-2  text-xs rounded-full font-bold w-fit ${
+                group?.type === "Community Group"
+                  ? "bg-green text-black"
+                  : "bg-pink text-black"
+              }`}
             >
-              {group?.name}
-            </Link>
-            <p className="text-sm  opacity-80 mt-4 capitalize">
-              {group?.description}
-            </p>
-          </div>
+              {group?.type || "Community Group"}
+            </span>
 
-          {/* <p className="text-sm text-darkBlue font-bold">
+            <div className="space-y-2">
+              <h1
+                className="text-xl md:text-3xl font-bold capitalize tracking-tight
+              "
+              >
+                {group?.name}
+              </h1>
+              <p className="text-sm  opacity-80 mt-4 capitalize">
+                {group?.description}
+              </p>
+            </div>
+
+            {/* <p className="text-sm text-darkBlue font-bold">
             {group.memberCount} Members
           </p> */}
-        </div>
-
-        <Link href={`/groups/${group?.id}`} className="relative group">
-          <div className="w-full h-full absolute left-0 right-0 rounded-2xl bg-[#00000076] z-20 opacity-0 group-hover:opacity-100 duration-300 transition-all" />
-          <div className="w-12 h-12 rounded-full bg-customYellow text-gray-600 flex items-center justify-center absolute z-[30] left-1/2 top-1/2 translate-y-[-50%] translate-x-[-50%] opacity-0 group-hover:opacity-100 duration-300 transition-all">
-            <FaLongArrowAltRight />
           </div>
-          <div>
-            <div className="relative h-44 sm:h-64 overflow-hidden w-full rounded-2xl mt-4 ">
-              {group?.image ? (
-                <Image
-                  src={group?.image}
-                  alt="Card Image"
-                  width={500}
-                  height={500}
-                  className="md:h-full md:w-full w-[200px] object-cover rounded-2xl hover:scale-110 transition-all"
-                />
-              ) : (
-                <div
-                  className="h-full w-full bg-gray-200 rounded-2xl flex items-center justify-center text-gray-600
+          <div className="relative group">
+            <div className="w-full h-full absolute left-0 right-0 rounded-2xl bg-[#00000076] z-20 opacity-0 group-hover:opacity-100 duration-300 transition-all" />
+            <div className="w-12 h-12 rounded-full bg-customYellow text-gray-600 flex items-center justify-center absolute z-[30] left-1/2 top-1/2 translate-y-[-50%] translate-x-[-50%] opacity-0 group-hover:opacity-100 duration-300 transition-all">
+              <FaLongArrowAltRight />
+            </div>
+            <div>
+              <div className="relative h-44 sm:h-64 overflow-hidden w-full rounded-2xl mt-4 ">
+                {group?.image ? (
+                  <Image
+                    src={group?.image}
+                    alt="Card Image"
+                    width={500}
+                    height={500}
+                    className="md:h-full md:w-full w-[200px] object-cover rounded-2xl hover:scale-110 transition-all"
+                  />
+                ) : (
+                  <div
+                    className="h-full w-full bg-gray-200 rounded-2xl flex items-center justify-center text-gray-600
               "
-                >
-                  No Image Found
-                </div>
-              )}
+                  >
+                    No Image Found
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </Link>
-      </div>
+        </div>
+      </Link>
     </div>
   );
 }

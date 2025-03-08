@@ -4,7 +4,7 @@ import Image, { StaticImageData } from "next/image";
 import React, { useState } from "react";
 import { FaUpload } from "react-icons/fa";
 import { RiCloseLargeFill } from "react-icons/ri";
-import { useCreateGroupPostMutation } from "@/redux/api/baseApi";
+import { useCreateGroupPostMutation } from "@/redux/api/groupApi";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { IoClose } from "react-icons/io5";
@@ -49,7 +49,7 @@ const CreateGroupPost = ({
     try {
       const res = await createPost({ groupId, formData }).unwrap();
       console.log("Post Response:", res);
-      toast("Uploaded post successfully!");
+      toast.success(res?.message || "Uploaded post successfully!");
       setCreatePost(false); // Close modal on success
     } catch (error) {
       console.error("Error creating post:", error);
