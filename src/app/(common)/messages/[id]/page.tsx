@@ -163,7 +163,7 @@ export default function Home() {
       {/* Sidebar Toggle Button (Mobile Only) */}
       <button
         onClick={() => setIsSidebarVisible(!isSidebarVisible)}
-        className="fixed right-4 top-4 z-50 p-2 bg-gray-800 text-white rounded-md md:hidden"
+        className="fixed right-2 top-6 z-50 p-1 bg-gray-800 text-white rounded-md md:hidden"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
