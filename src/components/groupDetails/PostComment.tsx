@@ -4,8 +4,10 @@ import { IoSendSharp } from "react-icons/io5";
 import {
   useGetPostCommentsQuery,
   useCreateCommentMutation,
-  useGetPostsByGroupIdQuery,
 } from "@/redux/api/baseApi";
+import {
+  useGetPostsByGroupIdQuery,
+} from "@/redux/api/groupApi";
 import { useParams } from "next/navigation";
 
 interface Comment {

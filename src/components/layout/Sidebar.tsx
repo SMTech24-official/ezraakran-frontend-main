@@ -19,7 +19,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/redux/slice/userSlice";
 import Image from "next/image";
-import minilogo from "@/assets/ezra_logo.png";
+import minilogo from "@/assets/ezra_logo_mini.png";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -77,9 +77,9 @@ export function Sidebar({ className }: SidebarProps) {
             <Image
               src={minilogo}
               alt="logo"
-              width={200}
-              height={300}
-              className="h-full w-full object-cover block ml-[-25px]"
+              width={100}
+              height={100}
+              className="h-full max-w-20 object-cover block ml-[-25px] pt-4 pl-4"
             />
           </h2>
         )}

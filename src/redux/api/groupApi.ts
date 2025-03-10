@@ -39,6 +39,7 @@ const groupApi = baseApi.injectEndpoints({
             }),
             providesTags: ["Group"],
         }),
+
         // group status
         getGroupStatus: builder.query({
             query: ({ groupId }) => ({
@@ -64,6 +65,12 @@ const groupApi = baseApi.injectEndpoints({
         // get Posts By Group
         getPostsByGroupId: builder.query({
             query: (groupId) => `/group-post/group/${groupId}`,
+            providesTags: ["Post"],
+        }),
+
+           // get my Posts By Group
+           getMyPostsByGroupId: builder.query({
+            query: (groupId) => `/group-post/user/${groupId}`,
             providesTags: ["Post"],
         }),
 
@@ -93,6 +100,15 @@ const groupApi = baseApi.injectEndpoints({
             }),
             providesTags: ["Group"],
         }),
+
+        // group member by group id
+        getJoinRequestsByGroupId: builder.query({
+            query: (groupId) => ({
+                url: `/group-member/joinRequest/${groupId}`,
+                method: "GET",
+            }),
+            providesTags: ["Group"],
+        }),
     })
 });
 
@@ -105,8 +121,10 @@ export const {
     useJoinGroupMutation,
     useLeaveGroupMutation,
     useGetPostsByGroupIdQuery,
+    useGetMyPostsByGroupIdQuery,
     useCreateGroupPostMutation,
     useDeleteGroupPostMutation,
-    useGetGroupMemberByGroupIdQuery
+    useGetGroupMemberByGroupIdQuery,
+    useGetJoinRequestsByGroupIdQuery
 
 } = groupApi;
