@@ -6,10 +6,8 @@ import { GrDislike, GrLike } from "react-icons/gr";
 import { LiaComments } from "react-icons/lia";
 import {
   useDeleteGroupPostMutation,
-  useGetPostsByGroupIdQuery,
 } from "@/redux/api/groupApi";
 import {
-  useGetPostReactionsQuery,
   usePostReactionMutation,
 } from "@/redux/api/baseApi";
 import { useParams } from "next/navigation";
@@ -18,45 +16,45 @@ import Loading from "../Loading";
 import PostComment from "./PostComment";
 import { count } from "console";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 interface Comment {
-    id: number;
-    name: string;
-    comment: string;
-    time: string;
-  }
+  id: number;
+  name: string;
+  comment: string;
+  time: string;
+}
 
-  interface Post {
-    id: string;
-    title: string;
-    images: string[];
-    createdAt: string;
-    user: {
-      firstName: string;
-      lastName: string;
-      profilePicture: string;
-    };
-  }
-
+interface Post {
+  id: string;
+  title: string;
+  images: string[];
+  createdAt: string;
+  user: {
+    firstName: string;
+    lastName: string;
+    profilePicture: string;
+  };
+}
 
 const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
-    const [count, setCount] = useState(0);
-    const [liked, setLiked] = useState(false);
-    const [unLiked, setunLiked] = useState(false);
-    const [groupPostId, setgroupPostId] = useState("");
-    const [commentSectionVisible, setCommentSectionVisible] = useState(false);
-    const [deletePost, setDeletePost] = useState(false);
-    
-    const [deleteGroupPost] = useDeleteGroupPostMutation();
+  const user = useSelector((state: RootState) => state?.user?.user);
+  const [groupPostId, setgroupPostId] = useState("");
+  const [commentSectionVisible, setCommentSectionVisible] = useState(false);
+  const [deletePost, setDeletePost] = useState(false);
 
+  const [deleteGroupPost] = useDeleteGroupPostMutation();
 
   const [postReaction] = usePostReactionMutation();
-  const { data: reactionsData } = useGetPostReactionsQuery(groupPostId);
+  // const { data: reactionsData } = useGetPostReactionsQuery(groupPostId);
 
+  // console.log(reactionsData, "reactionsData");
+  console.log(groupPost, "groupPost");
+  const isUserLiked = groupPost.some((post: any) => post?.GroupPostReaction.some((reaction: any) => reaction?.userId === user?.id && reaction?.type === "LIKE"));
+  const isUserUnLiked = groupPost.some((post: any) => post?.GroupPostReaction.some((reaction: any) => reaction?.userId === user?.id && reaction?.type === "UNLIKE"));
 
-  console.log(reactionsData, "reactionsData");
-  console.log(groupPost, "groupPostId");
-  // Function to handle reactions
 
   const handleDeletePost = async (id: string) => {
     try {
@@ -75,21 +73,12 @@ const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
     try {
       const response = await postReaction({ groupPostId, type });
       console.log(response, "response");
-      if (response?.data?.success) {
-        if (type === "LIKE") {
-          setLiked(true);
-          setunLiked(false); // Reset "unLiked" when a post is liked
-        } else if (type !== "LIKE") {
-          setunLiked(true);
-          setLiked(false); // Reset "liked" when a post is unliked
-        }
-      }
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error.data.message|| "Error handling post reaction");
       console.error("Error handling post reaction:", error);
-      alert("Error handling post reaction:");
+     
     }
   };
-
 
   return (
     <div className="container flex flex-col gap-5 md:gap-0 py-3 px-0 md:px-8 mt-6 md:mt-12">
@@ -153,8 +142,8 @@ const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
                         key={index}
                         className={`w-full rounded-2xl overflow-hidden bg-[#00000037] ${
                           post.images.length === 1
-                            ? "h-[200px] md:h-[500px]" // Full width, bigger height for single image
-                            : "h-[200px] md:h-[400px]" // Normal height for multiple images
+                            ? "h-[200px] md:h-[500px]"
+                            : "h-[200px] md:h-[400px]"
                         }`}
                       >
                         <Image
@@ -179,42 +168,61 @@ const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
               </div>
 
               <div className="flex items-center justify-between py-6 ">
-                <div className="flex gap-6 md:gap-8 text-xl">
-                  {/* Like button */}
-                  <span
+                <div className="flex gap-4 md:gap-6 text-lg">
+                  {/* Like Button */}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => handlePostReactions(post?.id, "LIKE")}
-                    className={`md:text-xl text-base font-bold flex items-center gap-2 cursor-pointer ${
-                      liked ? "text-customGreen" : "text-white" // Change color if liked
+                    className={`flex items-center gap-2 p-2 rounded-lg border border-gray-300 transition-all duration-300 ${
+                      isUserLiked ? "bg-red" : " text-gray-200 hover:bg-red"
                     }`}
                   >
-                    <GrLike className="text-base md:text-xl" />
-                    <span>Like</span>
-                    <span className="text-xl">{count}</span>{" "}
-                    {/* Display like count */}
-                  </span>
+                    <GrLike className="text-lg md:text-xl" />
+                    <span className="font-semibold">Like</span>
+                    {post.likeCount > 0 && (
+                      <span className="text-lg font-bold">
+                        {post.likeCount}
+                      </span>
+                    )}
+                  </motion.button>
 
-                  {/* Unlike button */}
-                  <span
+                  {/* Unlike Button */}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => handlePostReactions(post?.id, "UNLIKE")}
-                    className={`md:text-xl text-base font-bold flex items-center gap-2 cursor-pointer ${
-                      !unLiked ? "text-white" : "text-yellow" // Change color if not liked
+                    className={`flex items-center gap-2 p-2 rounded-lg border border-gray-300 transition-all duration-300 ${
+                      isUserUnLiked
+                        ? "bg-yellow text-gray-600"
+                        : " hover:text-gray-600 hover:bg-yellow"
                     }`}
                   >
-                    <GrDislike className="text-base md:text-xl" />
-                    <span>Unlike</span>
-                  </span>
+                    <GrDislike className="text-lg md:text-xl" />
+                    <span className="font-semibold">Unlike</span>
+                    {post.unlikeCount > 0 && (
+                      <span className="text-lg font-bold">
+                        {post.unlikeCount}
+                      </span>
+                    )}
+                  </motion.button>
                 </div>
 
                 <h3
-                  className="text-base md:text-xl font-bold opacity-80 flex gap-2 items-center cursor-pointer"
+                   className={`flex items-center gap-2 p-2 rounded-lg border border-gray-300 transition-all duration-300 hover:text-gray-200 hover:bg-red cursor-pointer`}
                   onClick={() => {
                     setCommentSectionVisible(!commentSectionVisible);
                   }}
                 >
                   <LiaComments className="text-xl" /> Comments
+                  {post.commentCount > 0 && (
+                    <span className="text-lg font-bold">
+                      {post.commentCount}
+                    </span>
+                  )}
                 </h3>
               </div>
-              {commentSectionVisible && <PostComment />}
+              {commentSectionVisible && <PostComment commentsData={post?.GroupPostComment} />}
             </div>
           </div>
         );

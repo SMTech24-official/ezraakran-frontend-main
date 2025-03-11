@@ -5,10 +5,9 @@ import {
   useGetPostCommentsQuery,
   useCreateCommentMutation,
 } from "@/redux/api/baseApi";
-import {
-  useGetPostsByGroupIdQuery,
-} from "@/redux/api/groupApi";
+import { useGetPostsByGroupIdQuery } from "@/redux/api/groupApi";
 import { useParams } from "next/navigation";
+import { toast } from "sonner";
 
 interface Comment {
   id: string;
@@ -17,17 +16,11 @@ interface Comment {
   comment: string;
 }
 
-const PostComment: React.FC = () => {
-  const params = useParams();
-  const {
-    data: groupItems,
-    isLoading,
-    isError,
-  } = useGetPostsByGroupIdQuery(params?.id);
-  const postId = groupItems.data[0].id;
+const PostComment = ({ commentsData }: any) => {
+  const { id: postId } = useParams();
+  console.log(commentsData, "commentsData");
   console.log(postId, "postId");
-  const { data: commentsData, refetch } = useGetPostCommentsQuery(postId);
-  // console.log(commentsData, "commentsData");
+
   const [createComment, { isLoading: isSubmitting }] =
     useCreateCommentMutation();
 
@@ -38,17 +31,20 @@ const PostComment: React.FC = () => {
   const handleSubmitComment = async () => {
     if (!newComment.trim() || isSubmitting) return;
     try {
-      await createComment({
-        post: postId,
+      const res = await createComment({
+        postId,
         comment: newComment,
       }).unwrap();
       setNewComment("");
-      refetch();
-    } catch (error) {
-      console.error("Error posting comment:", error);
+     toast.success(res?.message || "Comment added successfully!");
+    } catch (error:any) {
+toast.error(error?.data?.message || "Error adding comment!");
+      console?.error("Error posting comment:", error);
     }
   };
 
+  const isLoading = false;
+  const isError = false;
   return (
     <div className="bg-white p-5 md:p-10 rounded-3xl text-gray-600 shadow-lg">
       {!isAddingComment && (

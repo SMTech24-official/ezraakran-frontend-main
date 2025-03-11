@@ -138,29 +138,30 @@ export const baseApi = createApi({
     }),
     // post reaction
     postReaction: builder.mutation({
-      query: ({ groupPostId, type = "LIKE" }) => ({
-        url: "group-post-react", // Endpoint to handle reactions (like/unlike)
+      query: ({ groupPostId, type }) => ({
+        url: "group-post-react", 
         method: "POST",
         body: {
           groupPostId,
-          type: type, // 'like' or 'unlike'
+          type: type, 
         },
       }),
+      invalidatesTags: ["Post"],
     }),
     // get comments
     getPostComments: builder.query({
       query: (groupPostId) => `group-post-comment/${groupPostId}`,
+      providesTags: ["Post"],
     }),
     // create comments
     createComment: builder.mutation({
-      query: ({ post, comment }) => ({
-        url: `group-post-comment/${post}`, // Endpoint to handle comments
+      query: ({ postId, comment }) => ({
+        url: `group-post-comment/${postId}`, // Endpoint to handle comments
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: {
-          postId: post,
           comment,
         },
       }),

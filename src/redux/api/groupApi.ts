@@ -40,17 +40,11 @@ const groupApi = baseApi.injectEndpoints({
             providesTags: ["Group"],
         }),
 
-        // group status
-        getGroupStatus: builder.query({
-            query: ({ groupId }) => ({
-                url: `/group-member/${groupId}`, 
-                method: "GET",
-            }),
-        }),
+       
         // join group
         joinGroup: builder.mutation({
             query: ({ id }) => ({
-                url: `/group-member/join/${id}`,
+                url: `/group-member/joinRequest/${id}`,
                 method: "POST",
             }),
             invalidatesTags: ["Group"],
@@ -61,6 +55,7 @@ const groupApi = baseApi.injectEndpoints({
                 url: `/group-member/leave/${id}`,
                 method: "POST",
             }),
+            invalidatesTags: ["Group"],
         }),
         // get Posts By Group
         getPostsByGroupId: builder.query({
@@ -68,8 +63,8 @@ const groupApi = baseApi.injectEndpoints({
             providesTags: ["Post"],
         }),
 
-           // get my Posts By Group
-           getMyPostsByGroupId: builder.query({
+        // get my Posts By Group
+        getMyPostsByGroupId: builder.query({
             query: (groupId) => `/group-post/user/${groupId}`,
             providesTags: ["Post"],
         }),
@@ -92,10 +87,21 @@ const groupApi = baseApi.injectEndpoints({
             invalidatesTags: ["Post"],
         }),
 
+
+
         // group member by group id
         getGroupMemberByGroupId: builder.query({
             query: (groupId) => ({
                 url: `/group-member/${groupId}`,
+                method: "GET",
+            }),
+            providesTags: ["Group"],
+        }),
+
+        // get IS group member by group id
+        getIsGroupMemberGroupId: builder.query({
+            query: (groupId) => ({
+                url: `/group-member/member/${groupId}`,
                 method: "GET",
             }),
             providesTags: ["Group"],
@@ -109,6 +115,28 @@ const groupApi = baseApi.injectEndpoints({
             }),
             providesTags: ["Group"],
         }),
+
+        //update join status
+        updateJoinStatus: builder.mutation({
+            query: ({ groupId, memberId, status }) => {
+              return {
+                url: `/group-member/joinRequest/${groupId}`,
+                method: "PUT",
+                body: { memberId, status },
+              };
+            },
+            invalidatesTags: ["Group"],
+          }),
+
+        //update member block status
+        updateBlockStatus: builder.mutation({
+            query: ({ groupId, memberId }) => ({
+                url: `/group-member/${groupId}`,
+                method: "PUT",
+                body: { memberId },
+            }),
+            invalidatesTags: ["Group"],
+        })
     })
 });
 
@@ -117,7 +145,6 @@ export const {
     useGetGroupsQuery,
     useGetMyGroupsQuery,
     useSingleGroupQuery,
-    useGetGroupStatusQuery,
     useJoinGroupMutation,
     useLeaveGroupMutation,
     useGetPostsByGroupIdQuery,
@@ -125,6 +152,9 @@ export const {
     useCreateGroupPostMutation,
     useDeleteGroupPostMutation,
     useGetGroupMemberByGroupIdQuery,
-    useGetJoinRequestsByGroupIdQuery
+    useGetIsGroupMemberGroupIdQuery,
+    useGetJoinRequestsByGroupIdQuery,
+    useUpdateJoinStatusMutation,
+    useUpdateBlockStatusMutation
 
 } = groupApi;

@@ -7,7 +7,7 @@ import CreatePost from "./CreateGroupPost";
 import { useParams } from "next/navigation";
 import {
   useGetGroupMemberByGroupIdQuery,
-  useGetGroupStatusQuery,
+  useGetIsGroupMemberGroupIdQuery,
   useJoinGroupMutation,
   useSingleGroupQuery,
 } from "@/redux/api/groupApi";
@@ -19,72 +19,35 @@ import Loading from "../Loading";
 const GroupBanner = () => {
   const { id: groupId } = useParams(); 
   const { data: singleGroup, isLoading } = useSingleGroupQuery(groupId);
-
   const [createPost, setCreatePost] = useState(false);
-  const [isJoined, setIsJoined] = useState(false);
-  const [joinGroup, { isLoading: joinLoading }] = useJoinGroupMutation(); // Mutation hook to join group
+  const [joinGroup, { isLoading: joinLoading }] = useJoinGroupMutation(); 
   
   const user = useSelector(
     (state: { user: { user: { id: string } } }) => state.user.user
   );
   const userId = user?.id;
-  console.log(userId);
   const { data } = useGetGroupMemberByGroupIdQuery(groupId);
   const member = data?.data?.data.length;
-  const groupMember = data?.data?.data || [];
-
-  // console.log(groupMember, "groupMember");
 
   // Filter group members based on userId
   interface GroupMember {
     userId: string;
   }
 
-  const isUserGroupMember: GroupMember[] = groupMember?.find(
-    (member: GroupMember) => member?.userId === userId
-  );
   const isOwner = singleGroup?.data?.ownerId === userId;
 
-  // const { data: groupStatus } = useGetGroupStatusQuery({ groupId });
-  // console.log(groupStatus);
+    const { data:isGroupMember } = useGetIsGroupMemberGroupIdQuery(groupId);
+    const isMember = isGroupMember?.data
 
-  useEffect(() => {
-    // console.log(data?.isMember, "isMember");
-    if (data?.isMember) {
-      setIsJoined(true);
-    }
-  }, [data]);
-  useEffect(() => {
-    if (createPost) {
-      document.body.style.overflow = "hidden";
-      document.body.style.opacity = "50";
-    } else {
-      document.body.style.overflow = "auto";
-      document.body.style.opacity = "1";
-    }
-  }, [createPost]);
+ const handleJoinGroup = async () => {
 
-  const handleJoinGroup = async () => {
     try {
-      if (isJoined) {
-        toast.info("You are already a member of this group.");
-        return;
-      }
-
-      const response = await joinGroup({ groupId }).unwrap();
-      // console.log(response);
-      toast.success("Joined group successfully!");
-      setIsJoined(true); // Update state to indicate user has joined
-    } catch (error) {
+      const response = await joinGroup({ id: groupId }).unwrap();
+      console.log(response);
+      toast.success(response?.message || "Joined group successfully!");
+    } catch (error:any) {
+      toast.error(error?.data?.message || "Error joining group!");
       console.error("Error joining group:", error);
-      if (
-        (error as any).data &&
-        (error as any).data.message === "You are already a member of this group"
-      ) {
-        toast.info("You are already a member of this group.");
-      } else {
-        toast.error("Failed to join group. Please try again.");
-      }
     }
   };
   if (isLoading) return <Loading />;
@@ -106,17 +69,19 @@ const GroupBanner = () => {
             {member} Members
           </h3>
 
-          {isOwner && <h3 className="text-sm opacity-80 md:text-base md:mt-4 font-bold ">
-            {member} Joining Request
-          </h3>}
           <div className="flex md:flex-row flex-col gap-5 mt-1 md:mt-5">
-            {isUserGroupMember ? (
-              <Link
-                href=""
+            {isMember?.status === "APPROVED" ? (
+              <button
                 className="py-3 text-base px-7 bg-green text-white rounded-md font-bold md:text-nowrap text-center  cursor-not-allowed"
               >
                 Joined ✅
-              </Link>
+              </button>
+            ) : isMember?.status === "PENDING" ? (
+              <button
+                className="py-3 text-base px-7 bg-green text-white rounded-md font-bold md:text-nowrap text-center  cursor-not-allowed"
+              >
+                Requested 🥺
+              </button>
             ) : (
               <button
                 onClick={handleJoinGroup}
@@ -128,7 +93,7 @@ const GroupBanner = () => {
             )}
 
             {/* Show 'Create Post' button if joined */}
-            {isUserGroupMember && (
+            {isMember?.status === "APPROVED" && (
               <button
                 onClick={() => setCreatePost(true)}
                 className="py-3 text-base px-7 bg-green text-white rounded-md font-bold md:text-nowrap text-center hover:bg-yellow duration-300 transition-all hover:text-gray-600"

@@ -38,13 +38,10 @@ export default {
   			green: '#6D9985',
   			yellow: '#F9D442',
   			purple: '#5D3C7F',
-			// red:'#ff397f',
 			red:'#2d634a',
 
 			spray:'#71ecde',
 			blue:'#2d634a',
-			// blue:'#2d429c',
-			// darkBlue: '#111e5d',
 			darkBlue: "#30a670",
 			customYellow: "#ffcc00",
 			customGreen: "#2d634a"
