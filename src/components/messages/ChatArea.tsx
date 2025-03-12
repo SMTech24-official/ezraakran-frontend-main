@@ -1,5 +1,3 @@
-
-
 // "use client";
 // import { Send } from "lucide-react";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -99,14 +97,6 @@
 //     </div>
 //   );
 // }
-
-
-
-
-
-
-
-
 
 // "use client";
 // import { Send } from "lucide-react";
@@ -215,10 +205,8 @@
 //   );
 // }
 
-
-
 "use client";
-import { Send } from "lucide-react";
+import { MoreHorizontal, Phone, Send, Video } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -258,6 +246,26 @@ export default function ChatArea({
 
   return (
     <div className="flex-1 flex flex-col w-full h-[calc(100vh-83px)]">
+      {/* chat header */}
+      <div className="flex items-center justify-between p-4 border-b bg-red text-white">
+        <div className="flex items-center">
+          <Avatar>
+            <AvatarImage src={selectedUser?.profilePicture || "https://github.com/shadcn.png"} />
+          </Avatar>
+          <div className="ml-4">
+            <h3 className="font-bold text-lg">
+              {selectedUser?.firstName} {selectedUser.lastName}
+            </h3>
+            <p className="text-sm text-[#]">Online</p>
+          </div>
+        </div>
+        <div className="flex space-x-4">
+          <Phone className="text-gray-200 text-xl cursor-pointer" />
+          {/* <Video className="text-gray-200 text-xl cursor-pointer" /> */}
+          <MoreHorizontal className="text-gray-200 text-xl cursor-pointer" />
+        </div>
+      </div>
+
       {/* Chat Messages */}
       <div className="flex-1 overflow-y-auto p-4">
         {loadingMessages ? (
@@ -266,7 +274,9 @@ export default function ChatArea({
             <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : messages.length === 0 ? (
-          <p className="text-center text-white font-bold italic">No messages yet.</p>
+          <p className="text-center text-white font-bold italic">
+            No messages yet.
+          </p>
         ) : (
           messages.map((msg, index) => (
             <div

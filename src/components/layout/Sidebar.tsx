@@ -65,7 +65,7 @@ export function Sidebar({ className }: SidebarProps) {
     <div
       ref={sidebarRef}
       className={cn(
-        "flex flex-col border-r bg-customGreen h-screen fixed z-20",
+        "flex flex-col border-r bg-customGreen h-screen fixed z-50 transition-all duration-300 ease-in-out",
         collapsed ? "w-16" : "w-64",
         className
       )}

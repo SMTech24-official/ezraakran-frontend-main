@@ -5,24 +5,35 @@ import {
   useGetPostCommentsQuery,
   useCreateCommentMutation,
 } from "@/redux/api/baseApi";
-import { useGetPostsByGroupIdQuery } from "@/redux/api/groupApi";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
+import { Avatar, AvatarImage } from "../ui/avatar";
+import { formatDistanceToNow } from "date-fns";
 
-interface Comment {
+interface User {
   id: string;
-  name: string;
-  time: string;
-  comment: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  profilePicture: string;
 }
 
-const PostComment = ({ commentsData }: any) => {
-  const { id: postId } = useParams();
-  console.log(commentsData, "commentsData");
-  console.log(postId, "postId");
+type TGroupPostComment = {
+  id: string;
+  groupPostId: string;
+  userId: string;
+  comment: string;
+  createdAt: string; 
+  updatedAt: string; 
+  user: User; 
+}
+const PostComment = ({postId}:{postId:string}) => {
 
   const [createComment, { isLoading: isSubmitting }] =
     useCreateCommentMutation();
+
+const {data:commentsData}= useGetPostCommentsQuery(postId)
+console.log(commentsData, 'commentsData')
 
   const [newComment, setNewComment] = useState<string>("");
   const [showAllComments, setShowAllComments] = useState<boolean>(false);
@@ -97,27 +108,36 @@ toast.error(error?.data?.message || "Error adding comment!");
       ) : (
         showAllComments &&
         (commentsData?.data?.length > 0 ? (
-          commentsData.data.map((item: Comment) => (
+          commentsData.data.map((item: TGroupPostComment) => (
             <div
               key={item.id}
               className="border border-gray-300 py-4 px-4 mt-4 rounded-2xl shadow-sm"
             >
               <div className="flex gap-4">
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-gray-300 rounded-full"></div>
+              <Avatar>
+                <AvatarImage
+                  src={
+                    item?.user.profilePicture ||
+                    "https://github.com/shadcn.png"
+                  }
+                  alt="Avatar"
+                  className="border border-gray-200 rounded-full"
+                />
+              </Avatar>
                 <div className="flex flex-col">
-                  <h2 className="text-sm md:text-xl font-bold">{item.name}</h2>
-                  <p className="text-xs md:text-sm text-gray-500">
-                    {item.time}
+                  <h2 className="text-sm md:text-xl font-bold">{item?.user?.firstName} {item?.user?.lastName}</h2>
+                  <p className="text-xs md:text-sm text-gray-500 italic">
+                   <span className="text-gray-600 ">{formatDistanceToNow(new Date(item?.createdAt))}</span> ago
                   </p>
                   <h1 className="text-sm md:text-lg font-medium">
                     {item.comment}
                   </h1>
-                  <div className="reply flex items-center gap-2 mt-2 cursor-pointer hover:opacity-70 transition">
+                  {/* <div className="reply flex items-center gap-2 mt-2 cursor-pointer hover:opacity-70 transition">
                     <HiArrowTurnUpLeft className="text-gray-600" />
                     <span className="font-bold text-sm md:text-base">
                       Reply
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

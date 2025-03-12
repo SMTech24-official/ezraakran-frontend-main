@@ -165,6 +165,7 @@ export const baseApi = createApi({
           comment,
         },
       }),
+      invalidatesTags:["Post"]
     }),
     // get all chat messages
     getUserConversations: builder.query({

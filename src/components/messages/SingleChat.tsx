@@ -12,7 +12,7 @@ interface ChatMessage {
 }
 
 // Initialize the Socket.IO client
-const socket = io("http://10.0.10.39:5001/api/v1"); // Replace with your server URL
+const socket = io("http://10.0.10.39:5001"); // Replace with your server URL
 
 const SingleChat = () => {
   const [userId, setUserId] = useState<string>(""); // Your User ID

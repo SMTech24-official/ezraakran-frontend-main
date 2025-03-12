@@ -4,12 +4,8 @@ import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { GrDislike, GrLike } from "react-icons/gr";
 import { LiaComments } from "react-icons/lia";
-import {
-  useDeleteGroupPostMutation,
-} from "@/redux/api/groupApi";
-import {
-  usePostReactionMutation,
-} from "@/redux/api/baseApi";
+import { useDeleteGroupPostMutation } from "@/redux/api/groupApi";
+import { usePostReactionMutation } from "@/redux/api/baseApi";
 import { useParams } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
 import Loading from "../Loading";
@@ -41,31 +37,35 @@ interface Post {
 
 const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
   const user = useSelector((state: RootState) => state?.user?.user);
-  const [groupPostId, setgroupPostId] = useState("");
   const [commentSectionVisible, setCommentSectionVisible] = useState(false);
   const [deletePost, setDeletePost] = useState(false);
 
   const [deleteGroupPost] = useDeleteGroupPostMutation();
-
   const [postReaction] = usePostReactionMutation();
-  // const { data: reactionsData } = useGetPostReactionsQuery(groupPostId);
 
-  // console.log(reactionsData, "reactionsData");
-  console.log(groupPost, "groupPost");
-  const isUserLiked = groupPost.some((post: any) => post?.GroupPostReaction.some((reaction: any) => reaction?.userId === user?.id && reaction?.type === "LIKE"));
-  const isUserUnLiked = groupPost.some((post: any) => post?.GroupPostReaction.some((reaction: any) => reaction?.userId === user?.id && reaction?.type === "UNLIKE"));
-
+  const isUserLiked = groupPost?.some((post: any) =>
+    post?.GroupPostReaction?.some(
+      (reaction: any) =>
+        reaction?.userId === user?.id && reaction?.type === "LIKE"
+    )
+  );
+  const isUserUnLiked = groupPost?.some((post: any) =>
+    post?.GroupPostReaction?.some(
+      (reaction: any) =>
+        reaction?.userId === user?.id && reaction?.type === "UNLIKE"
+    )
+  );
+  // const isUserPost = groupPost?.some((post: any) => post.userId === user?.id);
+  // console.log(isUserPost, "isuse");
 
   const handleDeletePost = async (id: string) => {
     try {
-      const response = await deleteGroupPost({ id });
-      console.log(response, "response");
-      if (response?.data?.success) {
-        toast("Post deleted successfully");
-      }
-    } catch (error) {
-      console.error("Error deleting post:", error);
-      toast("Error deleting post:");
+      const res = await deleteGroupPost({ id }).unwrap();
+      toast.success(res.message || "Group post deleted successfully")
+      console.log(res);
+    } catch (err: any) {
+      console.log(err, "err");
+      toast.error(err.data.message || "Error deleting post");
     }
   };
 
@@ -74,9 +74,8 @@ const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
       const response = await postReaction({ groupPostId, type });
       console.log(response, "response");
     } catch (error: any) {
-      toast.error(error.data.message|| "Error handling post reaction");
+      toast.error(error.data.message || "Error handling post reaction");
       console.error("Error handling post reaction:", error);
-     
     }
   };
 
@@ -108,21 +107,26 @@ const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
                   <p className="text-sm opacity-80">{timeAgo}</p>
                 </div>
               </div>
-              <div className="cursor-pointer relative">
-                <div className="p-1" onClick={() => setDeletePost(!deletePost)}>
-                  <BsThreeDotsVertical />
+              {post.userId === user.id && (
+                <div className="cursor-pointer relative">
+                  <div
+                    className="p-1"
+                    onClick={() => setDeletePost(!deletePost)}
+                  >
+                    <BsThreeDotsVertical />
+                  </div>
+                  {deletePost && (
+                    <ul className="bg-white rounded-lg text-black absolute top-[45%] right-0 w-fit py-2 md:py-3">
+                      <li
+                        className="py-1 px-4 font-bold text-nowrap  text-sm md:text-base"
+                        onClick={() => handleDeletePost(post?.id)}
+                      >
+                        Delete post
+                      </li>
+                    </ul>
+                  )}
                 </div>
-                {deletePost && (
-                  <ul className="bg-white rounded-lg text-black absolute top-[45%] right-0 w-fit py-2 md:py-3">
-                    <li
-                      className="py-1 px-4 font-bold text-nowrap  text-sm md:text-base"
-                      onClick={() => handleDeletePost(post?.id)}
-                    >
-                      Delete post
-                    </li>
-                  </ul>
-                )}
-              </div>
+              )}
             </div>
             <div className="mt-5 md:mt-8 ">
               <h2 className="font-bold text-base md:text-xl">{post?.title}</h2>
@@ -209,20 +213,20 @@ const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
                 </div>
 
                 <h3
-                   className={`flex items-center gap-2 p-2 rounded-lg border border-gray-300 transition-all duration-300 hover:text-gray-200 hover:bg-red cursor-pointer`}
+                  className={`flex items-center gap-2 p-2 rounded-lg border border-gray-300 transition-all duration-300 hover:text-gray-200 hover:bg-red cursor-pointer`}
                   onClick={() => {
                     setCommentSectionVisible(!commentSectionVisible);
                   }}
                 >
                   <LiaComments className="text-xl" /> Comments
-                  {post.commentCount > 0 && (
+                  {post._count.GroupPostComment > 0 && (
                     <span className="text-lg font-bold">
-                      {post.commentCount}
+                      {post._count.GroupPostComment}
                     </span>
                   )}
                 </h3>
               </div>
-              {commentSectionVisible && <PostComment commentsData={post?.GroupPostComment} />}
+              {commentSectionVisible && <PostComment postId={post?.id} />}
             </div>
           </div>
         );

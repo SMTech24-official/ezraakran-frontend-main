@@ -30,7 +30,7 @@ export default function Home() {
 
   // Initialize socket connection
   useEffect(() => {
-    const newSocket = io("http://localhost:5001");
+    const newSocket = io("http://10.0.10.41:5001");
     setSocket(newSocket);
 
     return () => {
@@ -163,7 +163,7 @@ export default function Home() {
       {/* Sidebar Toggle Button (Mobile Only) */}
       <button
         onClick={() => setIsSidebarVisible(!isSidebarVisible)}
-        className="fixed right-4 top-4 z-50 p-2 bg-gray-800 text-white rounded-md md:hidden"
+        className="fixed right-2 z-50 p-2 bg-gray-600 text-white rounded-md md:hidden"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -183,7 +183,7 @@ export default function Home() {
 
       {/* Sidebar (Mobile and Desktop) */}
       <div
-        className={`fixed inset-y-0 left-0 z-40 w-[300px] bg-white transform ${
+        className={`fixed inset-y-0 z-40 w-[300px] bg-white transform ${
           isSidebarVisible ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 md:relative md:w-[350px] lg:w-[400px] transition-transform duration-200 ease-in-out`}
       >

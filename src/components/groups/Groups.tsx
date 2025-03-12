@@ -27,21 +27,25 @@ interface Group {
 
 export default function Groups() {
   const [createGroupModel, setCreateGroupModel] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<"all" | "my">("all");
   const [currentPage, setCurrentPage] = useState(1);
   
   const itemsPerPage = 6;
-
+  
   const { data: groups, isLoading } = useGetGroupsQuery();
   const { data: myGroups, isLoading: myGroupsLoading } = useGetMyGroupsQuery();
-const apiGroups = groups?.data;
-const apiMyGroups = myGroups?.data;
+  
+  const [groupData, setGroupData]=useState(groups?.data)
+
 const allGroupsHandler = () => {
-  // setSelectedFilter("all");
+  setSelectedFilter("all");
+  setGroupData(groups?.data)
   setCurrentPage(1);
 }
 
 const myGroupsHandler = () => {
-  // setSelectedFilter("my");
+  setSelectedFilter("my");
+  setGroupData( myGroups?.data)
   setCurrentPage(1);
 }
 
@@ -71,19 +75,18 @@ const myGroupsHandler = () => {
               onClick={allGroupsHandler}
             >
               All Groups
-              <span className="ml-2 text-xs bg-red px-2 text-white rounded py-[2px]">
-                {apiGroups.length}
+              <span className={`ml-2 text-xs px-2 text-white rounded py-[2px] ${ selectedFilter === "all" ? "bg-red" : "bg-gray-200"}`}>
+                {groups?.data.length}
               </span>
             </div>
 
             <div
               className={`flex items-center text-sm sm:text-base font-bold cursor-pointer
-           }
               `}
               onClick={myGroupsHandler}
             >
               My Groups
-              <span className="ml-2 text-xs bg-gray-200 px-2 rounded py-[2px]">
+              <span className={`ml-2 text-xs px-2 rounded py-[2px] ${ selectedFilter === "my" ? "bg-red" : "bg-gray-200"}`}>
                 {myGroups?.data?.length}
               </span>
             </div>
@@ -131,7 +134,7 @@ const myGroupsHandler = () => {
 
         {/* Groups Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {apiGroups.map((group: Group) => (
+          {groupData?.map((group: Group) => (
             <GroupCard key={group.id} group={group} />
           ))}
         </div>

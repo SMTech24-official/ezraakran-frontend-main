@@ -82,12 +82,12 @@ export function Topbar() {
 
           {/* Notifications */}
           <Button variant="ghost" size="icon" className="relative">
-            <Link href="/messages" className="relative">
-              {/* <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-pink text-[10px] font-medium text-white flex items-center justify-center">
+            {/* <Link href="/messages" className="relative">
+              <span className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 rounded-full bg-pink text-[10px] font-medium text-white flex items-center justify-center">
                 1
-              </span> */}
+              </span>
               <LucideMessageCircleMore />
-            </Link>
+            </Link> */}
           </Button>
 
           {/* User Dropdown */}

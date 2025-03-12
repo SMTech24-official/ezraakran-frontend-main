@@ -273,19 +273,19 @@ export default function ChatSidebar({
   }, [searchTerm, chatMembers]);
 
   return (
-    <div className="w-full border-r flex flex-col h-[calc(100vh-83px)] shadow-lg">
+    <div className="w-full border-r flex flex-col h-full shadow-lg bg-red">
       {/* Header */}
       <div className="p-4 border-b flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-red">Chats</h1>
+        <h1 className="text-2xl font-bold text-white">Chats</h1>
       </div>
 
       {/* Search Bar */}
       <div className="p-4">
         <div className="relative">
-          <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+          <Search className="absolute left-3 top-3 h-5 w-5 text-gray-600" />
           <Input
             placeholder="Search chats"
-            className="pl-10 bg-blue rounded-lg border-none focus:ring-2 focus:ring-blue-400"
+            className="pl-10 bg-white text-gray-800 rounded-lg border-none focus:ring-2 focus:ring-blue-400"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
