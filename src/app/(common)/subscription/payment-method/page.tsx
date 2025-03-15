@@ -59,8 +59,8 @@ export default function PaymentForm() {
         userId,
       }).unwrap();
       const paymentIntentId = paymentIntentResponse?.data?.id;
-      console.log(paymentIntentId); // Assuming the ID is returned here
-      console.log("Payment Intent Response:", paymentIntentResponse);
+      // console.log(paymentIntentId); // Assuming the ID is returned here
+      // console.log("Payment Intent Response:", paymentIntentResponse);
 
       // Step 2: Create the payment method
       const paymentMethodResponse = await axios.post(
@@ -68,7 +68,7 @@ export default function PaymentForm() {
         payload,
         {
           headers: {
-            Authorization: `Bearer pk_test_51Qd3W6LFJ88ap2ZLjvXQPNdSPrVfXH1hRATqdsLborMexP99MbU21NOrzMsxg0dJG2lC6gYYWSsI3OKXG19I5vLK00HuX6Tybx`, // Replace with your Stripe Secret Key
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRIPE_PUBLISHED_KEY}`, // Replace with your Stripe Secret Key
             "Content-Type": "application/x-www-form-urlencoded",
           },
         }
@@ -85,7 +85,7 @@ export default function PaymentForm() {
         }),
         {
           headers: {
-            Authorization: `Bearer sk_test_51Qd3W6LFJ88ap2ZL5OnkDERytNirnaLc2V7jk8TnEClx0Oeyu9jIuq0PGMT6jlmSBrAGER8jRquizE5moyx5yrhd00lttGvEEz`, // Replace with Secret Key
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY}`, // Replace with Secret Key
             "Content-Type": "application/x-www-form-urlencoded",
           },
         }

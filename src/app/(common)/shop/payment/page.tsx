@@ -214,7 +214,7 @@ export default function PaymentForm() {
         payload,
         {
           headers: {
-            Authorization: `Bearer pk_test_51Qd3W6LFJ88ap2ZLjvXQPNdSPrVfXH1hRATqdsLborMexP99MbU21NOrzMsxg0dJG2lC6gYYWSsI3OKXG19I5vLK00HuX6Tybx`, // Replace with your Stripe Secret Key
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRIPE_PUBLISHED_KEY}`, // Replace with your Stripe Secret Key
             "Content-Type": "application/x-www-form-urlencoded",
           },
         }
