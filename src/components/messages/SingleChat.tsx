@@ -12,7 +12,8 @@ interface ChatMessage {
 }
 
 // Initialize the Socket.IO client
-const socket = io("http://10.0.10.39:5001"); // Replace with your server URL
+// const socket = io("http://10.0.10.39:5001"); // Replace with your server URL
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL); // Replace with your server URL
 
 const SingleChat = () => {
   const [userId, setUserId] = useState<string>(""); // Your User ID

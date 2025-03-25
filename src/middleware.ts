@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 export function middleware(request: NextRequest) {
   // Get token from cookies
   const token = request.cookies.get("accessToken")?.value;
+  // console.log(token, 'tok')
   if (!token) {
     // Redirect to home if no token is present
     return NextResponse.redirect(new URL("/login", request.url));

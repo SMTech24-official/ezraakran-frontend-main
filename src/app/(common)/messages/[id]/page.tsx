@@ -30,7 +30,7 @@ export default function Home() {
 
   // Initialize socket connection
   useEffect(() => {
-    const newSocket = io("http://10.0.10.41:5001", {
+    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
       transports: ["websocket"],
     }
     );

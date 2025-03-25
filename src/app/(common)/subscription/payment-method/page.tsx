@@ -102,7 +102,9 @@ export default function PaymentForm() {
           "Error during payment process:",
           error.response?.data || error.message
         );
+        toast.error(error.response?.data?.error?.message || "Error during payment process!");
       } else {
+        toast.error("Unexpected error during payment process!");
         console.error("Unexpected error:", error);
       }
     }

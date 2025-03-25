@@ -1,8 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-// const BASEAPI = process.env.NEXT_PUBLIC_DEV_API_URL;
-const BASEAPI ="https://ezraakran-community-server.vercel.app/api/v1";
+const BASEAPI = process.env.NEXT_PUBLIC_DEV_API_URL;
 
 // Define a service using a base URL and expected endpoints
 export const baseApi = createApi({
