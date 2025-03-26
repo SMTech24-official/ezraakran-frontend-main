@@ -260,9 +260,9 @@ export default function ChatArea({
           </div>
         </div>
         <div className="flex space-x-4">
-          <Phone className="text-gray-200 text-xl cursor-pointer" />
+          {/*<Phone className="text-gray-200 text-xl cursor-pointer" />*/}
           {/* <Video className="text-gray-200 text-xl cursor-pointer" /> */}
-          <MoreHorizontal className="text-gray-200 text-xl cursor-pointer" />
+         {/* <MoreHorizontal className="text-gray-200 text-xl cursor-pointer" /> */}
         </div>
       </div>
 
@@ -281,24 +281,21 @@ export default function ChatArea({
           messages.map((msg, index) => (
             <div
               key={index}
-              className={`flex ${
-                msg.senderId === userId ? "justify-end" : "justify-start"
-              } mb-4`}
+              className={`flex ${msg.senderId === userId ? "justify-end" : "justify-start"
+                } mb-4`}
             >
               <div
-                className={`flex flex-col ${
-                  msg.senderId === userId ? "items-end" : "items-start"
-                }`}
+                className={`flex flex-col ${msg.senderId === userId ? "items-end" : "items-start"
+                  }`}
               >
                 <span className="text-xs text-white mb-1">
                   {formatMessageTime(msg.createdAt)}
                 </span>
                 <div
-                  className={`p-3 rounded-lg ${
-                    msg.senderId === userId
+                  className={`p-3 rounded-lg ${msg.senderId === userId
                       ? "bg-blue font-bold text-white"
                       : "bg-blue font-bold text-white"
-                  }`}
+                    }`}
                   style={{
                     wordWrap: "break-word",
                     overflowWrap: "break-word",

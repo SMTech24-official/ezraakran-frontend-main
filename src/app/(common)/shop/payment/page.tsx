@@ -230,14 +230,16 @@ export default function PaymentForm() {
         paymentMethodId,
       }).unwrap();
       console.log(paymentBuyProductsResponse);
-    } catch (error) {
+    } catch (error:any) {
       if (axios.isAxiosError(error)) {
         console.error(
           "Error during payment process:",
           error.response?.data || error.message
         );
+        toast.error(error.response?.data.message || "Error during payment!");
       } else {
         console.error("Unexpected error:", error);
+        toast.error(error.data.message);
       }
     }
   };

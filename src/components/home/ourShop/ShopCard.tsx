@@ -25,6 +25,7 @@ const ShopCard = ({ product }: ShopCardProps) => {
   // console.log(product, "product id");
 
   const handleBuyClick = () => {
+    console.log('hii')
     const url = `shop/payment?postId=${product?.id}`;
     router.push(url);
   };

@@ -219,7 +219,7 @@ const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
                   }}
                 >
                   <LiaComments className="text-xl" /> Comments
-                  {post._count.GroupPostComment > 0 && (
+                  {post._count?.GroupPostComment > 0 && (
                     <span className="text-lg font-bold">
                       {post._count.GroupPostComment}
                     </span>

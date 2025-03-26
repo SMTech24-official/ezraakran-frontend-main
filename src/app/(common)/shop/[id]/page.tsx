@@ -17,7 +17,13 @@ const page = () => {
     if (post?.data?.images?.length > 0) {
       setCurrentImage(post.data.images[0]);
     }
-  }, [post]); // Add dependency on 'post' to update the image correctly when the post data changes.
+  }, [post]); 
+
+  const handleAddToCart = () => {
+    console.log("Add to cart");
+  };
+
+
   if (isLoading) {
     <Loading />;
   }
@@ -68,9 +74,12 @@ const page = () => {
               </span>
             </div>
             <div className="inline-block align-bottom">
-              <button className="bg-yellow hover:opacity-75 opacity-100 text-gray-700 hover:bg-darkBlue rounded-full px-10 py-2 font-semibold duration-300 transition-all">
+             <Link href={`/shop/payment?postId=${post?.data?.id}`} passHref>
+             <button className="bg-yellow hover:opacity-75 opacity-100 text-gray-700 hover:bg-darkBlue rounded-full px-10 py-2 font-semibold duration-300 transition-all">
                 <i className="mdi mdi-cart -ml-2 mr-2"></i> BUY NOW
               </button>
+
+              </Link>
             </div>
           </div>
         </div>
