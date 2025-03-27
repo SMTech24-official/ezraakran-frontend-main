@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { formatDistanceToNow } from "date-fns";
+import { smartDateFormatter } from "@/utils/dateDistance";
 
 interface User {
   id: string;
@@ -36,8 +37,8 @@ const {data:commentsData}= useGetPostCommentsQuery(postId)
 console.log(commentsData, 'commentsData')
 
   const [newComment, setNewComment] = useState<string>("");
-  const [showAllComments, setShowAllComments] = useState<boolean>(false);
-  const [isAddingComment, setIsAddingComment] = useState<boolean>(false);
+  const [showAllComments, setShowAllComments] = useState<boolean>(true);
+  const [isAddingComment, setIsAddingComment] = useState<boolean>(true);
 
   const handleSubmitComment = async () => {
     if (!newComment.trim() || isSubmitting) return;
@@ -58,14 +59,14 @@ toast.error(error?.data?.message || "Error adding comment!");
   const isError = false;
   return (
     <div className="bg-white p-5 md:p-10 rounded-3xl text-gray-600 shadow-lg">
-      {!isAddingComment && (
+      {/* {!isAddingComment && (
         <div
           onClick={() => setIsAddingComment(true)}
           className="cursor-pointer text-sm md:text-base font-bold text-gray-500 hover:text-gray-800 transition"
         >
           Add a Comment
         </div>
-      )}
+      )} */}
 
       {isAddingComment && (
         <div className="flex mt-5">
@@ -80,7 +81,7 @@ toast.error(error?.data?.message || "Error adding comment!");
                 onChange={(e) => setNewComment(e.target.value)}
               />
               <button
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-sky-500 text-2xl"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-darkBlue text-2xl"
                 onClick={handleSubmitComment}
                 disabled={isSubmitting}
               >
@@ -127,7 +128,7 @@ toast.error(error?.data?.message || "Error adding comment!");
                 <div className="flex flex-col">
                   <h2 className="text-sm md:text-xl font-bold">{item?.user?.firstName} {item?.user?.lastName}</h2>
                   <p className="text-xs md:text-sm text-gray-500 italic">
-                   <span className="text-gray-600 ">{formatDistanceToNow(new Date(item?.createdAt))}</span> ago
+                   <span className="text-gray-600 ">{smartDateFormatter(new Date(item?.createdAt))}</span>
                   </p>
                   <h1 className="text-sm md:text-lg font-medium">
                     {item.comment}

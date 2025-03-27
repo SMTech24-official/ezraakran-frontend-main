@@ -68,12 +68,9 @@ const CreateGroupPost = ({
 
       <div className="flex flex-col">
         {/* User Info (Placeholder) */}
-        <div className="flex gap-6 items-center">
-          <div className="w-16 h-16 bg-black rounded-full flex-shrink-0">
-            <Image src="" alt="" />
-          </div>
+        <div className="flex gap-6 items-center p-2 md:p-4">
           <div className="details flex flex-col gap-2 w-full">
-            <h2 className="text-base md:text-xl font-bold">Name</h2>
+            <h2 className="text-xl md:text-4xl font-bold text-center">Create Group Post</h2>
           </div>
         </div>
 
@@ -85,7 +82,7 @@ const CreateGroupPost = ({
           {/* Title Input */}
           <input
             type="text"
-            placeholder="Title for your post"
+            placeholder="Title Your Post"
             className="font-bold text-base md:text-xl block border border-gray-200 rounded-md py-2 px-5 outline-none focus:ring-1 focus:ring-blue-600 shadow-sm w-full"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -111,13 +108,7 @@ const CreateGroupPost = ({
           </div>
 
           {/* Submit Button */}
-          <button
-            onClick={handlePostClick}
-            className="mt-4 bg-[#3c55c2] py-2 px-8 rounded-md text-white w-full"
-            disabled={isLoading}
-          >
-            {isLoading ? "Posting..." : "Post"}
-          </button>
+         
 
           {/* Image Previews */}
           {previews.length > 0 && (
@@ -151,6 +142,14 @@ const CreateGroupPost = ({
               </div>
             </div>
           )}
+
+<button
+            onClick={handlePostClick}
+            className="mt-4 bg-red py-2 px-8 rounded-md text-white w-full text-base md:text-xl font-bold"
+            disabled={isLoading}
+          >
+            {isLoading ? "Posting..." : "Post"}
+          </button>
         </form>
       </div>
     </div>

@@ -36,5 +36,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/shop", "/groups","/members","/messages/:id"],
+  matcher: ["/shop","/shop/:id", "/groups","/members", "/messages/:id", "/profile","/groups/:id" ],
 };

@@ -59,7 +59,7 @@ const GroupBanner = () => {
       <div className="rounded-3xl py-6 px-7 md:py-10 md:px-12 bg-customGreen text-white w-full mt-8 md:mt-20 h-auto md:h-[500px] flex md:flex-row flex-col md:items-center md:justify-center gap-5">
         {/* left */}
         <div className="left w-full md:w-1/2 flex flex-col gap-2">
-          <div className="px-4 py-1 bg-pink text-gray-600 w-fit rounded-full">
+          <div className="px-4 py-1 bg-yellow text-gray-600 w-fit rounded-full">
             <h3 className="text-sm  font-bold">Community Group</h3>
           </div>
           <h1 className="text-xl md:text-5xl  text-white font-bold md:mt-4">
@@ -113,7 +113,7 @@ const GroupBanner = () => {
         </div>
         {/* right */}
         <div className="right w-full md:w-1/2 md:h-full h-[200px] overflow-hidden md:py-5">
-          <Image
+          <img
             src={singleGroup?.data?.image || ""}
             alt="group-image"
             height={400}

@@ -15,7 +15,7 @@ const TabsSection = () => {
   const { data } = useGetIsGroupMemberGroupIdQuery(groupId);
   const isGroupMember = data?.data?.status === "APPROVED" 
   console.log(isGroupMember, 'isGroupMember');
-  const isOwner = data?.data?.group?.ownerId === user.id;
+  const isOwner = data?.data?.group?.ownerId === user?.id;
   return (
     <div>
       {isGroupMember && (

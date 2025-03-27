@@ -108,7 +108,7 @@ export const baseApi = createApi({
         body: data,
       }),
     }),
-    // Define the create stripe account links mutation
+
     createStripeAccountLinks: builder.mutation({
       query: (data) => ({
         url: "/stripe/create-account-link",
@@ -116,6 +116,8 @@ export const baseApi = createApi({
         body: data,
       }),
     }),
+
+    
     // get all user
     getAllUsers:builder.query({
       query: ()=>`/users`

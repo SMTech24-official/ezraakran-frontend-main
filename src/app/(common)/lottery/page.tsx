@@ -9,9 +9,9 @@ export default function Lottery() {
       <section className="w-4/5 sm:w-full  border rounded-3xl mx-auto px-4 md:px-12 lg:px-16 py-4 md:py-16 lg:py-20">
         <div className="flex flex-col-reverse md:flex-row gap-8 md:gap-12 lg:gap-16">
           {/* Left Column */}
-          <div className="flex-1 space-y-2 px-2">
+          <div className="flex-1 space-y-2 px-2 justify-center items-center  my-auto mx-auto">
             <div className="text-red text-base sm:text-2xl font-bold">
-              Feb 27 – Mar 2, 2023
+              {/* Feb 27 – Mar 2, 2023 */}
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
             Join our next

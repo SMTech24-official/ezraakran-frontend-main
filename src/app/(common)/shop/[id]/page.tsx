@@ -3,15 +3,13 @@ import { useGetPostByIdQuery } from "@/redux/api/baseApi";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
-import product from "../../../../assets/our shop/refridge.png";
 import Image from "next/image";
 import Loading from "@/components/Loading";
 
-const page = () => {
+const Page = () => {
   const { id } = useParams();
   const { data: post, isLoading } = useGetPostByIdQuery(id);
   const [currentImage, setCurrentImage] = React.useState(post?.data?.images[0]);
-  console.log(post?.data?.images, "post");
 
   useEffect(() => {
     if (post?.data?.images?.length > 0) {
@@ -19,39 +17,36 @@ const page = () => {
     }
   }, [post]); 
 
-  const handleAddToCart = () => {
-    console.log("Add to cart");
-  };
-
-
   if (isLoading) {
-    <Loading />;
+    return <Loading />;
   }
+
   return (
-    <div className="container h-screen flex items-center justify-center">
-      <div className="w-[80%] bg-customGreen rounded-xl flex items-center justify-center gap-5 h-auto">
+    <div className="container min-h-screen flex items-center justify-center px-4 py-6">
+      <div className="w-full max-w-4xl bg-customGreen rounded-xl flex flex-col md:flex-row items-center justify-center gap-6 p-6 md:p-10 shadow-lg">
+        
         {/* Image Gallery */}
-        <div className="w-[500px] h-fit rounded-xl overflow-hidden p-8">
+        <div className="w-full md:w-[500px] h-auto rounded-xl overflow-hidden">
           <Image
-            src={currentImage} // Fallback to 'product' image if currentImage is undefined
+            src={currentImage}
             alt="product image"
             width={500}
             height={500}
-            className="w-full h-[400px] object-cover rounded-lg"
+            className="w-full h-[300px] md:h-[400px] object-cover rounded-lg"
           />
-          <div className="flex justify-center items-center gap-5 mt-5 h-full">
+          <div className="flex justify-center items-center gap-3 mt-4">
             {post?.data?.images?.map((image: string, index: number) => (
               <button
                 key={index}
-                onClick={() => setCurrentImage(image)} // Update the main image on thumbnail click
-                className="rounded-md overflow-hidden border-2 transform hover:scale-110 transition-all"
+                onClick={() => setCurrentImage(image)}
+                className="rounded-md overflow-hidden border-2 hover:scale-110 transition-all w-16 h-16"
               >
                 <Image
                   src={image}
                   alt={`Thumbnail ${index}`}
                   width={100}
                   height={100}
-                  className="w-[100px] h-[100px] object-cover"
+                  className="w-full h-full object-cover"
                 />
               </button>
             ))}
@@ -59,33 +54,25 @@ const page = () => {
         </div>
 
         {/* Product Details */}
-        <div className="w-full md:w-1/2 px-10">
-          <div className="mb-10">
-            <h1 className="font-bold uppercase text-3xl mb-5">
-              {post?.data?.title}
-            </h1>
-            <p className="text-base">{post?.data?.description}</p>
-          </div>
-
-          <div className="flex items-center">
-            <div className="inline-block align-bottom mr-5">
-              <span className="text-2xl font-bold leading-none align-baseline">
-                £{post?.data?.price}
-              </span>
-            </div>
-            <div className="inline-block align-bottom">
-             <Link href={`/shop/payment?postId=${post?.data?.id}`} passHref>
-             <button className="bg-yellow hover:opacity-75 opacity-100 text-gray-700 hover:bg-darkBlue rounded-full px-10 py-2 font-semibold duration-300 transition-all">
-                <i className="mdi mdi-cart -ml-2 mr-2"></i> BUY NOW
+        <div className="w-full md:w-1/2 text-center md:text-left px-5 md:px-10">
+          <h1 className="font-bold uppercase text-xl md:text-3xl mb-3">
+            {post?.data?.title}
+          </h1>
+          <p className="text-sm md:text-base mb-5">{post?.data?.description}</p>
+          
+          <div className="flex flex-col md:flex-row items-center justify-center md:justify-start space-y-4 md:space-y-0 md:space-x-4">
+            <span className="text-2xl font-bold">£{post?.data?.price}</span>
+            <Link href={`/shop/payment?postId=${post?.data?.id}`} passHref>
+              <button className="bg-yellow hover:opacity-75 opacity-100 text-gray-700 hover:bg-darkBlue rounded-full px-6 py-2 font-semibold duration-300 transition-all">
+                BUY NOW
               </button>
-
-              </Link>
-            </div>
+            </Link>
           </div>
         </div>
+
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;

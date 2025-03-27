@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { smartDateFormatter } from "@/utils/dateDistance";
 
 interface Comment {
   id: number;
@@ -82,9 +83,7 @@ const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
   return (
     <div className="container flex flex-col gap-5 md:gap-0 py-3 px-0 md:px-8 mt-6 md:mt-12">
       {groupPost?.map((post: any) => {
-        const timeAgo = formatDistanceToNow(new Date(post?.createdAt), {
-          addSuffix: true,
-        });
+        const timeAgo = smartDateFormatter(new Date(post?.createdAt));
         return (
           <div
             key={post?.id}

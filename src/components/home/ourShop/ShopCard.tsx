@@ -69,7 +69,7 @@ const ShopCard = ({ product }: ShopCardProps) => {
 
         <button
           onClick={handleBuyClick}
-          className="w-full py-3 border border-gray-300 hover:bg-darkBlue hover:border-darkBlue hover:text-white text-sm font-bold text-black rounded-xl transition duration-200 mt-auto"
+          className="w-full py-3 border border-gray-300 hover:bg-darkBlue hover:border-darkBlue hover:text-white text-sm font-bold text-white rounded-xl transition duration-200 mt-auto"
         >
           Buy Product
         </button>

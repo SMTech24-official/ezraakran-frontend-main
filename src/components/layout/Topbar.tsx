@@ -111,20 +111,20 @@ export function Topbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="end"
-                className="w-48 bg-darkBlue border-none"
+                className="w-48 bg-red border-none p-2 mt-3"
               >
                 <Link href="/profile">
-                  <DropdownMenuItem className="hover:bg-black/5 rounded-lg cursor-pointer">
+                  <DropdownMenuItem className="hover:bg-darkBlue rounded-lg cursor-pointer">
                     Profile
                   </DropdownMenuItem>
                 </Link>
-                <Link href="/settings">
+                {/* <Link href="/settings">
                   <DropdownMenuItem className="hover:bg-black/5 rounded-lg cursor-pointer">
                     Settings
                   </DropdownMenuItem>
-                </Link>
+                </Link> */}
                 <DropdownMenuItem
-                  className="hover:bg-black/5 rounded-lg cursor-pointer"
+                  className="hover:bg-darkBlue rounded-lg cursor-pointer"
                   onClick={handleSignOut}
                 >
                   Sign out

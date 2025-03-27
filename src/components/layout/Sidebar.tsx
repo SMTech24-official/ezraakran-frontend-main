@@ -110,7 +110,7 @@ export function Sidebar({ className }: SidebarProps) {
 
       {/* Bottom Navigation Items */}
       <div className="pb-4">
-        <nav className="flex flex-col gap-2">
+        {/* <nav className="flex flex-col gap-2">
           {bottomNavItems.map((item) => (
             <Link
               key={item.href}
@@ -124,7 +124,7 @@ export function Sidebar({ className }: SidebarProps) {
               {!collapsed && <span>{item.label}</span>}
             </Link>
           ))}
-        </nav>
+        </nav> */}
       </div>
     </div>
   );

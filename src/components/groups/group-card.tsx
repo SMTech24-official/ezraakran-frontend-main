@@ -74,12 +74,12 @@ export default function GroupCard({ group }: GroupCardProps) {
   return (
     <div className="bg-red rounded-3xl p-4 md:p-10 relative">
       {/* MoreVertical Button */}
-      <button
+      {/* <button
         className="absolute md:right-10 md:top-10 right-4 top-4"
         onClick={togglePopup} // Toggle popup on click
       >
         <MoreVertical className="h-5 w-5 text-white" />
-      </button>
+      </button> */}
 
       {/* Popup */}
       {isPopupVisible && (
@@ -105,7 +105,7 @@ export default function GroupCard({ group }: GroupCardProps) {
               className={`px-3 py-2  text-xs rounded-full font-bold w-fit ${
                 group?.type === "Community Group"
                   ? "bg-green text-black"
-                  : "bg-pink text-black"
+                  : "bg-yellow font-semibold text-gray-800"
               }`}
             >
               {group?.type || "Community Group"}
@@ -116,7 +116,7 @@ export default function GroupCard({ group }: GroupCardProps) {
                 className="text-xl md:text-3xl font-bold capitalize tracking-tight
               "
               >
-                {group?.name}
+                {group?.name} 
               </h1>
               <p className="text-sm  opacity-80 mt-4 capitalize">
                 {group?.description}
@@ -140,7 +140,7 @@ export default function GroupCard({ group }: GroupCardProps) {
                     alt="Card Image"
                     width={500}
                     height={500}
-                    className="md:h-full md:w-full w-[200px] object-cover rounded-2xl hover:scale-110 transition-all"
+                    className="h-full w-full object-cover rounded-2xl hover:scale-110 transition-all"
                   />
                 ) : (
                   <div
