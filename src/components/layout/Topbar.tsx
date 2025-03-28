@@ -23,10 +23,12 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useGetUserByIdQuery } from "@/redux/api/baseApi";
+import { useRouter } from "next/navigation";
 
 export function Topbar() {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-  const dispatch = useDispatch(); // Initialize Redux dispatch
+  const dispatch = useDispatch(); 
+  const router = useRouter();
 
   // Get the user from Redux state
   const user = useSelector(selectUser);
@@ -40,6 +42,8 @@ export function Topbar() {
 
   const handleSignOut = () => {
     dispatch(removeUser());
+    localStorage.removeItem("user");
+   router.push("/");
   };
 
   // console.log(user);

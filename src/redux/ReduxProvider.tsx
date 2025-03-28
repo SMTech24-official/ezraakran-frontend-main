@@ -2,11 +2,12 @@
 import { store, persistor } from "@/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
+import Loading from "@/components/Loading";
 
 const ReduxProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <Provider store={store}>
-      <PersistGate loading={<h1>loading...</h1>} persistor={persistor}>
+      <PersistGate loading={<Loading />} persistor={persistor}>
         {children}
       </PersistGate>
     </Provider>

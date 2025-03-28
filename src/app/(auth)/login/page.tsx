@@ -3,7 +3,7 @@
 import { useLoginUserMutation } from "@/redux/api/baseApi";
 import { setUser } from "@/redux/slice/userSlice";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -20,80 +20,29 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  // const onSubmit: SubmitHandler<FormData> = async (data) => {
-  //   // console.log("Form Data Submitted:", data);
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect') || '/';
 
-  //   try {
-  //     const { email, password } = data;
-  //     const res = await login({ email, password }).unwrap();
-
-  //     if (res?.success) {
-  //       // console.log("Login successful:", res);
-  //       toast.success(res?.message);
-  //     }
-  //   } catch (error: any) {
-  //     console.error(
-  //       "Login failed:",
-  //       error?.data?.message || "An error occurred"
-  //     );
-  //     // You can set errors in the form or show a toast
-  //     // setError("email", { message: error?.data?.message });
-  //   }
-
-  //   reset();
-  // };
-
-  // const onSubmit: SubmitHandler<FormData> = async (data) => {
-  //   const payload = {
-  //     email: data.email,
-  //     password: data.password,
-  //   };
-  //   try {
-  //     const response = await loginUser(payload).unwrap(); // Call RTK Query mutation
-
-  //     dispatch(setUser(response)); // Save user data in Redux
-  //     if (response.success && response.data.accessToken) {
-  //       reset();
-  //       toast.success("Login Successfull!");
-  //       // console.log(response.data);
-  //       response.data.isSubscribed ? router.replace("/") : router.replace("/subscription");
-  //       // setTimeout(() => {
-  //       //   router.replace("/");
-  //       // }, 1000);
-  //     } else {
-  //       // console.log(response);
-  //     }
-  //     // console.log("User logged in successfully:", response);
-  //   } catch (err: any) {
-  //     if (err?.status === 400) {
-  //       // Bad Request Error (e.g., email already exists)
-  //       reset();
-  //     } else {
-  //       // Handle other errors
-  //       reset();
-  //     }
-  //   } finally {
-  //     reset();
-  //   }
-  // };
+console.log(redirect, 'redirect');
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const payload = {
-      identifier: data.identifier, // Send identifier (email or username)
+      identifier: data.identifier, 
       password: data.password,
     };
 
     try {
-      const response = await loginUser(payload).unwrap(); // Call RTK Query mutation
-      dispatch(setUser(response?.data)); // Save user data in Redux
+      const response = await loginUser(payload).unwrap();
+      dispatch(setUser(response?.data)); 
       if (response.success && response.data.accessToken) {
         reset();
         toast.success("Login Successful!");
-        response.data.isSubscribed
-        ? router.push("/")
-        : router.push("/subscription");
-      } else {
-        // console.log(response);
+        console.log(response.data , 'loo')
+        if (response.data.isSubscribed) {
+          router.push(redirect);
+        } else {
+          router.push(`/subscription?redirect=${encodeURIComponent(redirect)}`);
+        }
       }
     } catch (err: any) {
       console.error("Login failed:", err?.data?.message || "An error occurred");

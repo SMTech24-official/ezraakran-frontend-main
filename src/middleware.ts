@@ -46,64 +46,71 @@
 
 
 
-
-
-
-
-
-
-
-
-
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { jwtDecode } from "jwt-decode";
 
-export function middleware(request: NextRequest) {
+const publicRoutes = ["/login", "/signup"];
+const protectedRoutes = [
+  "/shop",
+  "/shop/:id",
+  "/groups",
+  "/members",
+  "/messages/:id",
+  "/profile",
+  "/groups/:id",
+  "/subscription"
+];
+
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const protectedPaths = ["/shop", "/groups", "/members", "/messages", "/profile"];
-  const isProtectedRoute = protectedPaths.some(path => pathname.startsWith(path));
+  const accessToken = request.cookies.get("accessToken")?.value;
 
-  // If not a protected route, continue
-  if (!isProtectedRoute) {
+  // 1. Handle public routes
+  if (publicRoutes.includes(pathname)) {
+    // If user is already logged in, redirect from auth pages to home
+    if (accessToken) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
     return NextResponse.next();
   }
 
-  // Get token from cookies
-  const token = request.cookies.get("accessToken")?.value;
+  // 2. Handle protected routes
+  if (protectedRoutes.includes(pathname)) {
+    // If no token, redirect to login with return URL
+    if (!accessToken) {
+      return NextResponse.redirect(
+        new URL(`/login?redirect=${encodeURIComponent(pathname)}`, request.url)
+      );
+    }
 
-  // For API routes or auth routes, continue
-  if (pathname.startsWith('/api') || pathname.startsWith('/login')) {
+    // Verify token
+    let decodedToken: any;
+    try {
+      decodedToken = jwtDecode(accessToken);
+    } catch (error) {
+      console.error("Failed to decode token", error);
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    // Subscription check (except for subscription page itself)
+    if (pathname !== "/subscription" && !decodedToken.isSubscribed) {
+      return NextResponse.redirect(
+        new URL(`/subscription?redirect=${encodeURIComponent(pathname)}`, request.url)
+      );
+    }
+
     return NextResponse.next();
   }
 
-  // Redirect to login if no token
-  if (!token) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('redirect', pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  // Decode token
-  let userInfo: { role?: string } = {};
-  try {
-    userInfo = jwtDecode(token) as { role?: string };
-  } catch (error) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('redirect', pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  // Admin route protection
-  if (pathname.startsWith("/dashboard") && userInfo?.role !== "SUPER_ADMIN") {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
-  return NextResponse.next();
+  // 3. Handle all other routes - redirect to home
+  return NextResponse.redirect(new URL("/", request.url));
 }
 
 export const config = {
   matcher: [
+    "/login",
+    "/signup",
+    "/subscription",
     "/shop",
     "/shop/:id",
     "/groups",
@@ -111,6 +118,5 @@ export const config = {
     "/messages/:id",
     "/profile",
     "/groups/:id",
-    "/dashboard/:path*"
   ],
 };
