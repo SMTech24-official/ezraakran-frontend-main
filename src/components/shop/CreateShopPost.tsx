@@ -90,7 +90,7 @@ const CreateShopPost = () => {
         // Convert FileList to an array (if it's not already an array)
         const imagesArray = Array.from(formData.images); // Converts FileList to an array
 
-        console.log(`aee imagess array`, imagesArray);
+        // console.log(`aee imagess array`, imagesArray);
 
         // Now you can safely use map
         imagesArray.forEach((img) => {
@@ -220,7 +220,7 @@ const CreateShopPost = () => {
                 accept="image/*"
                 onChange={(e) => {
                   const files = e.target.files;
-                  console.log(`see files`, files);
+                  // console.log(`see files`, files);
                   if (files?.length! > 0) {
                     // Convert FileList to an array and update the state
                     // const fileArray = Array.from(files);

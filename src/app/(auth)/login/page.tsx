@@ -21,14 +21,14 @@ export default function LoginPage() {
   const router = useRouter();
 
   // const onSubmit: SubmitHandler<FormData> = async (data) => {
-  //   console.log("Form Data Submitted:", data);
+  //   // console.log("Form Data Submitted:", data);
 
   //   try {
   //     const { email, password } = data;
   //     const res = await login({ email, password }).unwrap();
 
   //     if (res?.success) {
-  //       console.log("Login successful:", res);
+  //       // console.log("Login successful:", res);
   //       toast.success(res?.message);
   //     }
   //   } catch (error: any) {
@@ -55,15 +55,15 @@ export default function LoginPage() {
   //     if (response.success && response.data.accessToken) {
   //       reset();
   //       toast.success("Login Successfull!");
-  //       console.log(response.data);
+  //       // console.log(response.data);
   //       response.data.isSubscribed ? router.replace("/") : router.replace("/subscription");
   //       // setTimeout(() => {
   //       //   router.replace("/");
   //       // }, 1000);
   //     } else {
-  //       console.log(response);
+  //       // console.log(response);
   //     }
-  //     console.log("User logged in successfully:", response);
+  //     // console.log("User logged in successfully:", response);
   //   } catch (err: any) {
   //     if (err?.status === 400) {
   //       // Bad Request Error (e.g., email already exists)
@@ -93,7 +93,7 @@ export default function LoginPage() {
           ? router.replace("/")
           : router.replace("/subscription");
       } else {
-        console.log(response);
+        // console.log(response);
       }
     } catch (err: any) {
       console.error("Login failed:", err?.data?.message || "An error occurred");

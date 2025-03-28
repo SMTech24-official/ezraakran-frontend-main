@@ -68,7 +68,7 @@ export default function Home() {
     };
 
     const handleSentMessage = (message: any) => {
-      // console.log({message})
+      // // console.log({message})
       // // Replace the temporary message with the actual message from the server
       // setMessages((prevMessages) =>
       //   prevMessages.map((msg) =>

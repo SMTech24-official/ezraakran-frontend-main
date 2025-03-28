@@ -29,25 +29,25 @@ export default function Groups() {
   const [createGroupModel, setCreateGroupModel] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState<"all" | "my">("all");
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const itemsPerPage = 6;
-  
+
   const { data: groups, isLoading } = useGetGroupsQuery();
   const { data: myGroups, isLoading: myGroupsLoading } = useGetMyGroupsQuery();
-  
-  const [groupData, setGroupData]=useState(groups?.data)
 
-const allGroupsHandler = () => {
-  setSelectedFilter("all");
-  setGroupData(groups?.data)
-  setCurrentPage(1);
-}
+  const [groupData, setGroupData] = useState(groups?.data)
 
-const myGroupsHandler = () => {
-  setSelectedFilter("my");
-  setGroupData( myGroups?.data)
-  setCurrentPage(1);
-}
+  const allGroupsHandler = () => {
+    setSelectedFilter("all");
+    setGroupData(groups?.data)
+    setCurrentPage(1);
+  }
+
+  const myGroupsHandler = () => {
+    setSelectedFilter("my");
+    setGroupData(myGroups?.data)
+    setCurrentPage(1);
+  }
 
 
   // const handlePageChange = (page: number) => {
@@ -75,18 +75,18 @@ const myGroupsHandler = () => {
               onClick={allGroupsHandler}
             >
               All Groups
-              <span className={`ml-2 text-xs px-2 text-white rounded py-[2px] ${ selectedFilter === "all" ? "bg-red" : "bg-gray-200"}`}>
+              <span className={`ml-2 text-xs px-2 text-white rounded py-[2px] ${selectedFilter === "all" ? "bg-red" : "bg-gray-200"}`}>
                 {groups?.data.length}
               </span>
             </div>
 
             <div
-              className={`flex items-center text-sm sm:text-base font-bold cursor-pointer
-              `}
-              onClick={myGroupsHandler}
+              className={`flex items-center text-sm sm:text-base font-bold ${myGroups?.data?.length > 0 ? 'cursor-pointer' : 'cursor-not-allowed opacity-80'
+                }`}
+              onClick={myGroups?.data?.length > 0 ? myGroupsHandler : undefined}
             >
               My Groups
-              <span className={`ml-2 text-xs px-2 rounded py-[2px] ${ selectedFilter === "my" ? "bg-red" : "bg-gray-200"}`}>
+              <span className={`ml-2 text-xs px-2 rounded py-[2px] ${selectedFilter === "my" ? "bg-red" : "bg-gray-200"}`}>
                 {myGroups?.data?.length}
               </span>
             </div>
@@ -101,9 +101,8 @@ const myGroupsHandler = () => {
             >
               <FaPlus />
               <span
-                className={`${
-                  createGroupModel ? "block md:hidden" : "md:block hidden"
-                }`}
+                className={`${createGroupModel ? "block md:hidden" : "md:block hidden"
+                  }`}
               >
                 Create Group
               </span>
@@ -134,9 +133,20 @@ const myGroupsHandler = () => {
 
         {/* Groups Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {groupData?.map((group: Group) => (
-            <GroupCard key={group.id} group={group} />
-          ))}
+          {groupData?.length > 0 ? (
+            groupData.map((group: Group) => (
+              <GroupCard key={group.id} group={group} />
+            ))
+          ) : (
+            <div className="col-span-full text-center my-20 ">
+              <div className="text-white text-lg md:text-3xl font-medium">
+                No groups found
+              </div>
+              <p className="text-gray-200 text-base md:text-lg mt-2">
+                There are currently no groups available
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Pagination */}

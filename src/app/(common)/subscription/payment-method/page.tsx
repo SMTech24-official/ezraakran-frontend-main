@@ -51,7 +51,7 @@ export default function PaymentForm() {
       type: "card",
     });
 
-    console.log(data);
+    // console.log(data);
 
     try {
       // Step 1: Create a payment intent
@@ -59,8 +59,8 @@ export default function PaymentForm() {
         userId,
       }).unwrap();
       const paymentIntentId = paymentIntentResponse?.data?.id;
-      // console.log(paymentIntentId); // Assuming the ID is returned here
-      // console.log("Payment Intent Response:", paymentIntentResponse);
+      // // console.log(paymentIntentId); // Assuming the ID is returned here
+      // // console.log("Payment Intent Response:", paymentIntentResponse);
 
       // Step 2: Create the payment method
       const paymentMethodResponse = await axios.post(
@@ -75,7 +75,7 @@ export default function PaymentForm() {
       );
 
       const paymentMethodId = paymentMethodResponse.data.id;
-      console.log("Payment Method Response:", paymentMethodResponse);
+      // console.log("Payment Method Response:", paymentMethodResponse);
 
       // Step 3: Confirm the payment intent
       const confirmationResponse = await axios.post(
@@ -91,7 +91,7 @@ export default function PaymentForm() {
         }
       );
 
-      console.log("Confirmation Response:", confirmationResponse.data);
+      // console.log("Confirmation Response:", confirmationResponse.data);
       if (confirmationResponse?.data?.status === "succeeded") {
         toast.success("Subscription Payment successful!");
         router.replace("/");

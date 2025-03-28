@@ -25,7 +25,7 @@
 //       setMessage("");
 //     }
 //   };
-// console.log({selectedUser})
+// // console.log({selectedUser})
 //   // Auto-scroll to the bottom when messages change
 //   useEffect(() => {
 //     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

@@ -52,7 +52,7 @@ export default function SubscriptionPage() {
     }
     try {
       const response = await createSubscription({ userId }).unwrap();
-      // console.log("Subscription created successfully:", response);
+      // // console.log("Subscription created successfully:", response);
       if (response?.success) {
         toast.success("Subscription created successfully");
         router.replace("/subscription/payment-method");

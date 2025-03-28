@@ -39,7 +39,7 @@ type TGroupMember = {
 
 const AllMembers = () => {
   const user = useSelector((state: RootState) => state?.user?.user);
-  console.log(user, "user");
+  // console.log(user, "user");
   const { id: groupId } = useParams();
   const { data, isLoading } = useGetGroupMemberByGroupIdQuery(groupId);
   const [updateBlockStatus] = useUpdateBlockStatusMutation();
@@ -49,9 +49,9 @@ const AllMembers = () => {
     try {
       const data = await updateBlockStatus({ groupId, memberId }).unwrap();
       toast.success(data?.message || "Blocked Status Updated!");
-      console.log(data);
+      // console.log(data);
     } catch (error: any) {
-      console.log(error);
+      // console.log(error);
       toast.error(error.data.message || "Error updating block status!");
     }
   };

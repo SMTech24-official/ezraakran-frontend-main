@@ -57,15 +57,15 @@ const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
     )
   );
   // const isUserPost = groupPost?.some((post: any) => post.userId === user?.id);
-  // console.log(isUserPost, "isuse");
+  // // console.log(isUserPost, "isuse");
 
   const handleDeletePost = async (id: string) => {
     try {
       const res = await deleteGroupPost({ id }).unwrap();
       toast.success(res.message || "Group post deleted successfully")
-      console.log(res);
+      // console.log(res);
     } catch (err: any) {
-      console.log(err, "err");
+      // console.log(err, "err");
       toast.error(err.data.message || "Error deleting post");
     }
   };
@@ -73,7 +73,7 @@ const GroupPostCard = ({ groupPost }: { groupPost: Post[] }) => {
   const handlePostReactions = async (groupPostId: string, type: string) => {
     try {
       const response = await postReaction({ groupPostId, type });
-      console.log(response, "response");
+      // console.log(response, "response");
     } catch (error: any) {
       toast.error(error.data.message || "Error handling post reaction");
       console.error("Error handling post reaction:", error);

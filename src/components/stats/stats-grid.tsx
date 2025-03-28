@@ -10,27 +10,27 @@ export function StatsGrid() {
   const {data:posts}= useGetPostsQuery();
   const {data:groups}= useGetGroupsQuery();
 
-console.log(groups?.data)
+// console.log(groups?.data)
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
       <StatCard
         icon={<PersonStanding />}
         link="/members"
-        value={users?.data?.length}
+        value={users?.data?.length || 0}
         label="members"
         className="bg-customGreen"
       />
       <StatCard
         icon={<Users />}
         link="/groups"
-        value={groups?.data?.length}
+        value={groups?.data?.length || 0}
         label="groups"
         className="bg-customGreen"
       />
       <StatCard
         icon={<ShoppingBag />}
         link="/shop"
-        value={posts?.data?.meta?.total}
+        value={posts?.data?.meta?.total || 0}
         label="items for sell"
         className="bg-customGreen"
       />

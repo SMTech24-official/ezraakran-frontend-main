@@ -41,10 +41,10 @@ const JoinRequests = () => {
   const [acceptJoinRequest] = useUpdateJoinStatusMutation();
 
   const handleAcceptRequest = async (memberId: string, status: string) => {
-    console.log(memberId, status);
+    // console.log(memberId, status);
     try {
       const res = await acceptJoinRequest({groupId, memberId, status}).unwrap();
-      console.log(res)
+      // console.log(res)
       toast.success(res?.message || "Request accepted successfully!");
     } catch (error:any) {
       toast.error(error?.data?.message);

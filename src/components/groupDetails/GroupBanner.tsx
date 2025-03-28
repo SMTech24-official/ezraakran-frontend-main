@@ -43,7 +43,7 @@ const GroupBanner = () => {
 
     try {
       const response = await joinGroup({ id: groupId }).unwrap();
-      console.log(response);
+      // console.log(response);
       toast.success(response?.message || "Joined group successfully!");
     } catch (error:any) {
       toast.error(error?.data?.message || "Error joining group!");

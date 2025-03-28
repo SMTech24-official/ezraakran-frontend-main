@@ -34,7 +34,7 @@
 //       type: "card",
 //     });
 
-//     console.log(data);
+//     // console.log(data);
 
 //     try {
 //       const paymentMethodResponse = await axios.post(
@@ -189,7 +189,7 @@ export default function PaymentForm() {
   const [createBuyProducts, { isLoading }] = useCreateBuyProductsMutation();
   const searchParams = useSearchParams();
   const postId = searchParams.get("postId");
-  console.log(postId);
+  // console.log(postId);
 
   const onSubmit = async (data: any) => {
     const expirationDate = new Date(data.expirationDate);
@@ -205,7 +205,7 @@ export default function PaymentForm() {
       type: "card",
     });
 
-    console.log(data);
+    // console.log(data);
 
     try {
       // Step 1: Create a payment method
@@ -221,15 +221,15 @@ export default function PaymentForm() {
       );
 
       const paymentMethodId = paymentMethodResponse?.data?.id;
-      console.log("Payment Method Response:", paymentMethodResponse);
-      console.log(paymentMethodId);
+      // console.log("Payment Method Response:", paymentMethodResponse);
+      // console.log(paymentMethodId);
 
       // Step 2: Confirm the payment intent
       const paymentBuyProductsResponse = await createBuyProducts({
         postId,
         paymentMethodId,
       }).unwrap();
-      console.log(paymentBuyProductsResponse);
+      // console.log(paymentBuyProductsResponse);
     } catch (error:any) {
       if (axios.isAxiosError(error)) {
         console.error(

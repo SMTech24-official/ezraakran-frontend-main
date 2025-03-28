@@ -32,11 +32,11 @@ const itemsPerPage = 6;
 
 const page = () => {
   const { data: posts, error, isLoading } = useGetPostsQuery();
-  console.log(posts);
+  // console.log(posts);
   const [createPost] = useCreateShopPostMutation();
 
   const products = posts?.data?.data; // Accessing the nested "data" array
-  console.log(products);
+  // console.log(products);
   const [currentPage, setCurrentPage] = useState(1);
 
   // Calculate pagination details

@@ -22,10 +22,10 @@ interface ShopCardProps {
 const ShopCard = ({ product }: ShopCardProps) => {
   const router = useRouter();
 
-  // console.log(product, "product id");
+  // // console.log(product, "product id");
 
   const handleBuyClick = () => {
-    console.log('hii')
+    // console.log('hii')
     const url = `shop/payment?postId=${product?.id}`;
     router.push(url);
   };

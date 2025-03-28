@@ -7,7 +7,7 @@ import React from 'react';
 const MyPosts = () => {
     const {id: groupId} = useParams();
     const {data} = useGetMyPostsByGroupIdQuery(groupId);
-    console.log(data?.data)
+    // console.log(data?.data)
     return (
         <div>
             <GroupPostCard groupPost={data?.data} />

@@ -44,11 +44,11 @@ const CreateGroupPost = ({
     formData.append("title", title);
     selectedFiles.forEach((file) => formData.append("images", file)); // Append all images
 
-    console.log("FormData Entries:", formData);
+    // console.log("FormData Entries:", formData);
 
     try {
       const res = await createPost({ groupId, formData }).unwrap();
-      console.log("Post Response:", res);
+      // console.log("Post Response:", res);
       toast.success(res?.message || "Uploaded post successfully!");
       setCreatePost(false); // Close modal on success
     } catch (error) {

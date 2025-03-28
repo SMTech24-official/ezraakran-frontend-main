@@ -30,13 +30,13 @@ export function GroupCard({
 
   // Function to handle subscribe action
   const handleSubscribe = () => {
-    // console.log("Subscribed to", title);
+    // // console.log("Subscribed to", title);
     setIsPopupVisible(false); // Close the popup after action
   };
 
   // Function to handle leave group action
   const handleLeaveGroup = () => {
-    // console.log("Left group:", title);
+    // // console.log("Left group:", title);
     setIsPopupVisible(false); // Close the popup after action
   };
 

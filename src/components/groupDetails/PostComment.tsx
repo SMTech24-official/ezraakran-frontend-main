@@ -34,7 +34,7 @@ const PostComment = ({postId}:{postId:string}) => {
     useCreateCommentMutation();
 
 const {data:commentsData}= useGetPostCommentsQuery(postId)
-console.log(commentsData, 'commentsData')
+// console.log(commentsData, 'commentsData')
 
   const [newComment, setNewComment] = useState<string>("");
   const [showAllComments, setShowAllComments] = useState<boolean>(true);

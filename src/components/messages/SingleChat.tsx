@@ -23,32 +23,32 @@ const SingleChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]); // List of Messages
 
   useEffect(() => {
-    console.log("useEffect triggered", { userId, otherUserId });
+    // console.log("useEffect triggered", { userId, otherUserId });
 
     if (userId && otherUserId) {
       const room = [userId, otherUserId].sort().join("-"); // Generate unique room ID
       setRoomId(room);
-      console.log(`Generated Room ID: ${room}`);
+      // console.log(`Generated Room ID: ${room}`);
 
       socket.emit("joinSingleChat", { userId, otherUserId });
-      console.log(`Emitted joinSingleChat for room: ${room}`);
+      // console.log(`Emitted joinSingleChat for room: ${room}`);
     }
 
     // Listen for incoming messages
     socket.on("receiveMessage", (chatMessage: ChatMessage) => {
-      console.log("Received message:", chatMessage);
+      // console.log("Received message:", chatMessage);
       setMessages((prevMessages) => [...prevMessages, chatMessage]);
     });
 
     return () => {
-      console.log("Component unmounting, disconnecting socket...");
+      // console.log("Component unmounting, disconnecting socket...");
       socket.disconnect();
     };
   }, [userId, otherUserId]);
 
   const sendMessage = () => {
     if (message.trim()) {
-      console.log("Sending message:", {
+      // console.log("Sending message:", {
         senderId: userId,
         receiverId: otherUserId,
         message,
@@ -66,7 +66,7 @@ const SingleChat = () => {
         createdAt: new Date().toISOString(),
       };
       setMessages((prevMessages) => [...prevMessages, newMessage]);
-      console.log("Updated messages state:", [...messages, newMessage]);
+      // console.log("Updated messages state:", [...messages, newMessage]);
 
       setMessage("");
     }
@@ -85,7 +85,7 @@ const SingleChat = () => {
             value={userId}
             onChange={(e) => {
               setUserId(e.target.value);
-              console.log("User ID set to:", e.target.value);
+              // console.log("User ID set to:", e.target.value);
             }}
           />
         </label>
@@ -100,7 +100,7 @@ const SingleChat = () => {
             value={otherUserId}
             onChange={(e) => {
               setOtherUserId(e.target.value);
-              console.log("Other User ID set to:", e.target.value);
+              // console.log("Other User ID set to:", e.target.value);
             }}
           />
         </label>
@@ -133,7 +133,7 @@ const SingleChat = () => {
           placeholder="Type a message"
           onChange={(e) => {
             setMessage(e.target.value);
-            console.log("Message input changed:", e.target.value);
+            // console.log("Message input changed:", e.target.value);
           }}
         />
         <button onClick={sendMessage}>Send</button>

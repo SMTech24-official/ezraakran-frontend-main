@@ -32,17 +32,17 @@ export function Topbar() {
   const user = useSelector(selectUser);
   const isLoggedIn = !!user?.user?.id;
   const { data: userId } = useGetUserByIdQuery(user?.user?.id);
-  console.log(userId?.data?.profilePicture, "userId");
+  // console.log(userId?.data?.profilePicture, "userId");
   const profilePicture = userId?.data?.profilePicture;
   const firstNameFirstLetter = userId?.data?.firstName?.charAt(0);
   const lastNameFirstLetter = userId?.data?.lastName?.charAt(0);
-  console.log(firstNameFirstLetter, "firstNameFirstLetter");
+  // console.log(firstNameFirstLetter, "firstNameFirstLetter");
 
   const handleSignOut = () => {
     dispatch(removeUser());
   };
 
-  console.log(user);
+  // console.log(user);
   return (
     <div className="border-b">
       <div className=" flex items-center justify-between gap-4 px-4 h-20 relative">

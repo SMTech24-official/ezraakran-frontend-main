@@ -22,7 +22,7 @@ export default function SignupPage() {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log("Form Data Submitted:", data);
+    // // console.log("Form Data Submitted:", data);
     try {
       const { ...userData } = data;
       const res = await signup(userData).unwrap();
@@ -30,7 +30,7 @@ export default function SignupPage() {
         const authData = { email: res?.data?.email, password: data?.password };
         toast.success(res?.message);
         router.replace("/login");
-        console.log(authData);
+        // console.log(authData);
       }
     } catch (error: any) {
       console.error(error?.data?.message);

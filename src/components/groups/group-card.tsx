@@ -25,7 +25,7 @@ interface GroupCardProps {
 }
 
 export default function GroupCard({ group }: GroupCardProps) {
-  console.log(group, "group");
+  // console.log(group, "group");
   const [joinGroup] = useJoinGroupMutation();
   const [leaveGroup] = useLeaveGroupMutation();
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -44,14 +44,14 @@ export default function GroupCard({ group }: GroupCardProps) {
 
     try {
       const response = await joinGroup({ id: group.id }).unwrap(); // Await response properly
-      console.log("Joined group:");
+      // console.log("Joined group:");
       setIsPopupVisible(false); // Close popup after action
       toast.success(`Joined group: ${group.name}`);
     } catch (error) {
       const response = await joinGroup({ id: group.id }).unwrap();
       console.error("Error joining group:", error);
       toast.error(response.data.message);
-      console.log(response.data.data.message);
+      // console.log(response.data.data.message);
     }
   };
 
@@ -64,7 +64,7 @@ export default function GroupCard({ group }: GroupCardProps) {
 
     try {
       const response = await leaveGroup({ id: group.id }).unwrap(); // Await response properly
-      console.log("Left group:", group.name, response);
+      // console.log("Left group:", group.name, response);
       setIsPopupVisible(false); // Close popup after action
     } catch (error) {
       console.error("Error leaving group:", error);

@@ -16,7 +16,7 @@ const ProfilePage = () => {
   const [editMode, setEditMode] = useState(false);
   const { data: userData, refetch } = useGetUserByIdQuery(user?.user?.id);
   const [updateUserProfile] = useUpdateUserProfileMutation();
-  console.log(userData, 'userData');
+  // console.log(userData, 'userData');
 
   const userFirstName = userData?.data?.firstName || "";
   const userLastName = userData?.data?.lastName || "";
@@ -120,7 +120,7 @@ const ProfilePage = () => {
         {!editMode ? (
           <div className="mt-0 md:mt-4 space-y-2 ">
             <h2 className="text-xl md:text-3xl font-semibold">About Me</h2>
-            <p className="text-sm md:text-lg text-gray-200">{userData?.data?.about}</p>
+            <p className="text-sm md:text-lg text-gray-200">{userData?.data?.about || "No bio provided."}</p>
           </div>
         ) : (
           // Edit Form

@@ -5,14 +5,14 @@
 
 // export function initializeSocket(io: SocketIOServer) {
 //   io.on("connection", (socket) => {
-//     console.log('connected:', socket.id);
+//     // console.log('connected:', socket.id);
 //     // ! Joining Helper to Customer Chat Room
     
 //     socket.on("joinRoom", async ({ orderId, helperId }) => {
 //       try {
 //         const roomId =`${orderId}_${helperId}`;
 //         socket.join(roomId);
-//         console.log(`User joined room: ${roomId}`);
+//         // console.log(`User joined room: ${roomId}`);
 
 //         socket.data.roomId = roomId;
 
@@ -55,7 +55,7 @@
 //         const adminRoomId = `admin_${userId}`;
 //         socket.join(adminRoomId);
 
-//         // console.log('Admin joined room:', adminRoomId);
+//         // // console.log('Admin joined room:', adminRoomId);
 
 //         socket.data.adminRoomId = adminRoomId;
 
@@ -93,7 +93,7 @@
 
 //     // Handle user disconnection
 //     socket.on("disconnect", () => {
-//       // console.log("User disconnected:", socket.id);
+//       // // console.log("User disconnected:", socket.id);
 //     });
 //   });
 // }
