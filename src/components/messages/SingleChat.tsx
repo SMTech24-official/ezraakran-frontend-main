@@ -48,7 +48,7 @@ const SingleChat = () => {
 
   const sendMessage = () => {
     if (message.trim()) {
-      // console.log("Sending message:", {
+      console.log("Sending message:", {
         senderId: userId,
         receiverId: otherUserId,
         message,
