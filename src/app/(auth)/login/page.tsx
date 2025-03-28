@@ -90,8 +90,8 @@ export default function LoginPage() {
         reset();
         toast.success("Login Successful!");
         response.data.isSubscribed
-          ? router.replace("/")
-          : router.replace("/subscription");
+        ? router.push("/")
+        : router.push("/subscription");
       } else {
         // console.log(response);
       }
